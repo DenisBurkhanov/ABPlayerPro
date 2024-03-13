@@ -327,14 +327,14 @@ extension ABPlayerView {
 			VStack{
 				Rectangle()
 					.foregroundStyle(dCS.pastelBlue)
-					.frame(height: 50)
-					.blur(radius: 100)
+					.frame(height: 100)
+					.blur(radius: 150)
 					
 				Spacer()
 				Rectangle()
 					.foregroundStyle(dCS.pastelPurple)
-					.frame(height: 50)
-					.blur(radius: 100)
+					.frame(height: 100)
+					.blur(radius: 150)
 			}
 			.ignoresSafeArea()
 			
