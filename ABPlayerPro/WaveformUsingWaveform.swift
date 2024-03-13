@@ -24,4 +24,27 @@ class WaveformModel: ObservableObject {
 	}
 }
 
+struct Wav: View {
+	var samples: SampleBuffer
+	var body: some View {
+		GeometryReader { geo in
+			
+			
+			Waveform(samples: samples)
+				.foregroundColor(.white)
+				.frame(width: geo.size.width, height: (geo.size.height * 2))
+			
+				.mask(
+					Rectangle()
+						.frame(height: geo.size.height)
+						.offset(x: 0, y: -(geo.size.height / 2))
+				)
+		}
+		
+	}
+	init(samples: SampleBuffer) {
+		self.samples = samples
+	}
+}
+
 

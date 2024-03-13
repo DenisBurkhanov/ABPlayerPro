@@ -267,8 +267,7 @@ struct ABPlayerView: View {
 		}
 		.onAppear() {
 			
-//			viewModel.createDataFolderIfNeeded()
-//			viewModel.checkIfFilesExist()
+
 			configureAudioSession()
 			prepareHaptix()
 		}
@@ -1245,6 +1244,8 @@ extension ABPlayerView {
 							Text("\(track.title).\(track.format)")
 								.foregroundColor(dCS.pastelPurpleLighter)
 								.font(.system(size: 15))
+								.lineLimit(1)
+								.minimumScaleFactor(0.5)
 								.padding()
 								.onTapGesture {
 									
@@ -1803,25 +1804,4 @@ struct ABPlayerView_Previews: PreviewProvider {
 }
 
 
-struct Wav: View {
-	var samples: SampleBuffer
-	var body: some View {
-		GeometryReader { geo in
-			
-			
-			Waveform(samples: samples)
-				.foregroundColor(.white)
-				.frame(width: geo.size.width, height: (geo.size.height * 2))
-			
-				.mask(
-					Rectangle()
-						.frame(height: geo.size.height)
-						.offset(x: 0, y: -(geo.size.height / 2))
-				)
-		}
-		
-	}
-	init(samples: SampleBuffer) {
-		self.samples = samples
-	}
-}
+
