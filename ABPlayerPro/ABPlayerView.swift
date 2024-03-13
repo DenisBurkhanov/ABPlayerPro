@@ -14,7 +14,7 @@ import Waveform
 
 class ViewModel: ObservableObject {
 	
-//	@Published var allTracks: [AudioTrack] = [defaultTrackMock, defaultTrackDont, defaultTrackAnubis, moon4, moon5, minus0, minus10, minus12, minus14, minus18, dm1, dm2]
+
 	@Published var allTracks: [ AudioTrack ] = []
 	
 	
@@ -428,9 +428,14 @@ extension ABPlayerView {
 				
 					
 				sections
-
-				Wav(samples: track.waveform)
-					.opacity(0.4)
+				
+				if track.title != "Empty track" {
+				
+					Wav(samples: track.waveform)
+						.opacity(0.4)
+				}
+				
+				
 					 
 					
 			}
