@@ -429,7 +429,7 @@ extension ABPlayerView {
 					
 				sections
 				
-				if track.title != "Empty track" {
+				if track.id != emptyTrack.id {
 				
 					Wav(samples: track.waveform)
 						.opacity(0.4)
