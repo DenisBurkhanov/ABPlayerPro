@@ -12,7 +12,6 @@
 		134695582B6EC0220089DD5D /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134695572B6EC0220089DD5D /* Logo.swift */; };
 		1349ADC62B6F465900C1F680 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1349ADC52B6F465900C1F680 /* Assets.xcassets */; };
 		134F35EF2B6CE4FE004139D2 /* Haptix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134F35EE2B6CE4FE004139D2 /* Haptix.swift */; };
-		136F88E52B8C40C90079D97C /* FilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136F88E42B8C40C90079D97C /* FilePicker.swift */; };
 		13706CB72B7F00F6000A1694 /* EditSectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13706CB62B7F00F6000A1694 /* EditSectionsView.swift */; };
 		1380DE082BA079E90098B80D /* WaveformUsingWaveform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1380DE072BA079E90098B80D /* WaveformUsingWaveform.swift */; };
 		1383F2102B7C7CB6007D8C09 /* Waveform in Frameworks */ = {isa = PBXBuildFile; productRef = 1383F20F2B7C7CB6007D8C09 /* Waveform */; };
@@ -23,7 +22,6 @@
 		13B604D22B0A419B000D8184 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B604D12B0A419B000D8184 /* Colors.swift */; };
 		13B604D42B0B86B6000D8184 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B604D32B0B86B6000D8184 /* AudioEngine.swift */; };
 		13B604D62B0B880C000D8184 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B604D52B0B880C000D8184 /* Song.swift */; };
-		13C984EB2B8700C200EA2883 /* StoredTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C984EA2B8700C200EA2883 /* StoredTracks.swift */; };
 		13EFA4EE2BA0F4B400D49D59 /* LibChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EFA4ED2BA0F4B400D49D59 /* LibChecker.swift */; };
 		13F4F8812B4903FB0088CD77 /* Empty track.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 13F4F8802B4903FB0088CD77 /* Empty track.mp3 */; };
 /* End PBXBuildFile section */
@@ -34,7 +32,6 @@
 		134695572B6EC0220089DD5D /* Logo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
 		1349ADC52B6F465900C1F680 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Downloads/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
 		134F35EE2B6CE4FE004139D2 /* Haptix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptix.swift; sourceTree = "<group>"; };
-		136F88E42B8C40C90079D97C /* FilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePicker.swift; sourceTree = "<group>"; };
 		13706CB62B7F00F6000A1694 /* EditSectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSectionsView.swift; sourceTree = "<group>"; };
 		1380DE072BA079E90098B80D /* WaveformUsingWaveform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformUsingWaveform.swift; sourceTree = "<group>"; };
 		139F07482B0D99A70061FDC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -46,7 +43,6 @@
 		13B604D12B0A419B000D8184 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		13B604D32B0B86B6000D8184 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 		13B604D52B0B880C000D8184 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
-		13C984EA2B8700C200EA2883 /* StoredTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTracks.swift; sourceTree = "<group>"; };
 		13EFA4ED2BA0F4B400D49D59 /* LibChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibChecker.swift; sourceTree = "<group>"; };
 		13F4F8802B4903FB0088CD77 /* Empty track.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Empty track.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,8 +89,6 @@
 				139F07482B0D99A70061FDC6 /* Info.plist */,
 				13B604C32B0A4008000D8184 /* ABPlayerProApp.swift */,
 				13B604C52B0A4008000D8184 /* ABPlayerView.swift */,
-				136F88E42B8C40C90079D97C /* FilePicker.swift */,
-				13C984EA2B8700C200EA2883 /* StoredTracks.swift */,
 				13EFA4ED2BA0F4B400D49D59 /* LibChecker.swift */,
 				13706CB62B7F00F6000A1694 /* EditSectionsView.swift */,
 				1300263C2B75445C00662213 /* WaveFormView.swift */,
@@ -200,7 +194,6 @@
 			files = (
 				13B604D42B0B86B6000D8184 /* AudioEngine.swift in Sources */,
 				13B604C62B0A4008000D8184 /* ABPlayerView.swift in Sources */,
-				13C984EB2B8700C200EA2883 /* StoredTracks.swift in Sources */,
 				13B604D22B0A419B000D8184 /* Colors.swift in Sources */,
 				1300263D2B75445C00662213 /* WaveFormView.swift in Sources */,
 				132E614D2B6B9657002777B9 /* silentMode.swift in Sources */,
@@ -211,7 +204,6 @@
 				1380DE082BA079E90098B80D /* WaveformUsingWaveform.swift in Sources */,
 				13B604C42B0A4008000D8184 /* ABPlayerProApp.swift in Sources */,
 				13B604D62B0B880C000D8184 /* Song.swift in Sources */,
-				136F88E52B8C40C90079D97C /* FilePicker.swift in Sources */,
 				13EFA4EE2BA0F4B400D49D59 /* LibChecker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
