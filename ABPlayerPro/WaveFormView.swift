@@ -111,7 +111,7 @@ struct WaveFormView: View {
 		}
 		.allowsHitTesting(false)
 		.ignoresSafeArea()
-		.scaleEffect(x: 1, y: 0.6)
+		.scaleEffect(x: 1, y: 0.65)
 //		.scaleEffect(1)
 	}
 	init(waveFormL: [CGFloat], waveFormR: [CGFloat], isStroke: Bool) {
