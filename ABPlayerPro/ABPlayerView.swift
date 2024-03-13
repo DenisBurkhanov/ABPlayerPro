@@ -1427,12 +1427,12 @@ extension ABPlayerView {
 			
 			Button {
 				if editState {
-//					viewModel.selectedForEditing.track.sections = viewModel.editSectionsBuffer
+
 					viewModel.applyChanges()
 					editState = false
 				} else {
 					editState = true
-//					viewModel.editSectionsBuffer = viewModel.selectedForEditing.track.sections
+
 				}
 				
 				sharpTap()
