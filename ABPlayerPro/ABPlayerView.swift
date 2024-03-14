@@ -320,6 +320,8 @@ struct ABPlayerView: View {
 	}
 }
 
+
+//MARK: STARTING PAGE
 extension ABPlayerView {
 	var startPage: some View {
 		ZStack {
@@ -398,7 +400,7 @@ extension ABPlayerView {
 	}
 }
 
-
+//MARK: A/B PAGE
 extension ABPlayerView {
 	
 	//MARK: A/B PAGE
@@ -1084,7 +1086,7 @@ extension ABPlayerView {
 	}
 }
 
-
+//MARK: SETUP/LIST PAGE
 extension ABPlayerView {
 	//MARK: SET PAGE
 	var setPage: some View {
@@ -1095,7 +1097,7 @@ extension ABPlayerView {
 					tracksAssined
 				}
 				.padding(.horizontal)
-				
+				//MARK: LIST OF ALL TRACKS
 				if !viewModel.allTracks.isEmpty {
 					listOfTracks
 						.padding(.horizontal)
@@ -1117,19 +1119,25 @@ extension ABPlayerView {
 					selectedTrackLabelLayer
 					ZStack {
 						selectedTrackPositionView
-						selectedTrackSections
+						if !editState {
+							selectedTrackSections
+						}
+						
 						Wav(samples: viewModel.selectedForEditing.track.waveform)
 							.opacity(0.4)
+						if editState {
+							editMarkUpSections
+						}
+						
 					}
 						.frame(height: 50)
 					selectedTrackJog
 						.frame(height: 50)
-//					selectedTrackButtons
+					
 					
 				}
 				.padding()
-//				.background(dCS.darkerGray)
-//				.background(in: RoundedRectangle(cornerRadius: 10))
+
 				
 			}
 			
@@ -1427,7 +1435,7 @@ extension ABPlayerView {
 			
 			Button {
 				if editState {
-
+//
 					viewModel.applyChanges()
 					editState = false
 				} else {
@@ -1508,7 +1516,7 @@ extension ABPlayerView {
 						ForEach(track.sections.sorted(by: { $0.startTime < $1.startTime } )) { section in
 							let sectionStart = section.startTime
 							let sectionEnd = ((blockWidth / (duration - padding) ) * (section.endTime - sectionStart ))
-							let sectionDuration = sectionEnd - sectionStart
+//							let sectionDuration = sectionEnd - sectionStart
 
 
 
@@ -1519,21 +1527,7 @@ extension ABPlayerView {
 									viewModel.selectedTrackPlayFrom(time: section.startTime)
 									dullTap()
 								}
-								.gesture(
-									DragGesture(minimumDistance: sectionDuration, coordinateSpace: .local)
-										.onChanged { gesture in
-											if gesture.translation.width < 0 {
-												
-											} else {
-												
-											}
-											
-										}
-										.onEnded { _ in
-											
-											
-										}
-								)
+								
 							
 								
 						}
@@ -1572,7 +1566,42 @@ extension ABPlayerView {
 		
 	}
 	
-	
+	var editMarkUpSections: some View {
+
+		GeometryReader { geometry in
+			
+			let blockWidth = (geometry.size.width)
+			let duration = (viewModel.selectedForEditing.duration)
+			
+			ZStack {
+				
+				
+				let track = viewModel.selectedForEditing.track
+				
+				
+				ForEach(track.sections.sorted(by: { $0.startTime < $1.startTime } )) { section in
+					let sectionStart = section.startTime
+					let sectionOffset = blockWidth / duration
+					
+					Rectangle()
+						.foregroundColor(section.color)
+						.frame(width: 4)
+						.overlay {
+							RoundedRectangle(cornerRadius: 10)
+								.stroke(lineWidth: 1)
+								.foregroundColor(.black)
+						}
+					
+						.offset(x: -(blockWidth / 2))
+						.offset(x: sectionStart * sectionOffset)
+					
+				}
+				
+			}
+			.frame(width: blockWidth)
+			.clipShape(RoundedRectangle(cornerRadius: 10))
+		}
+	}
 	
 	//MARK: SELECTED TRACK JOG
 	var selectedTrackJog: some View {
@@ -1612,13 +1641,8 @@ extension ABPlayerView {
 	}
 	//MARK: SELECTED TRACK EDITOR
 	var editView: some View {
-		
-		
-		
 		VStack {
-			
-			
-			
+
 			let track = viewModel.selectedForEditing.track
 
 			Text("\(track.title).\(track.format)")
@@ -1631,12 +1655,11 @@ extension ABPlayerView {
 			ScrollView {
 			
 				
-				ForEach(viewModel.selectedForEditing.track.sections.sorted(by: { $0.startTime < $1.startTime })) { section in
+				ForEach(track.sections.sorted(by: { $0.startTime < $1.startTime })) { section in
 					var colorEdit = false
-//
 					
 					
-//					editSectionsView( section: section)
+
 
 					HStack {
 						
@@ -1678,21 +1701,29 @@ extension ABPlayerView {
 							Spacer()
 							
 							
-							Button {
-								
-							} label: {
-								
-								ZStack {
-									Circle()
-										.foregroundColor(dCS.pastelRed)
-										.frame(height: 30)
-										.opacity(0.4)
-									Image(systemName: "xmark")
-										.foregroundColor(.white)
-										.opacity(0.7)
-								}
-								
-							}
+							
+							Image(systemName: "play.fill")
+								.foregroundColor(.white)
+								.font(.system(size: 20))
+								.opacity(0.7)
+								.padding(.horizontal)
+//								.onTapGesture {
+//									
+//									viewModel.selectedForEditing.playFrom(time: section.startTime)
+//								}
+								.gesture(
+									DragGesture(minimumDistance: 0)
+										.onChanged({ _ in
+											sharpTap()
+											viewModel.selectedForEditing.playFrom(time: section.startTime)
+											viewModel.selectedForEditing.audioPlayer?.play()
+										})
+										
+										.onEnded { _ in
+											viewModel.selectedForEditing.audioPlayer?.pause()
+											
+										}
+								)
 
 							
 							
@@ -1713,10 +1744,11 @@ extension ABPlayerView {
 			.scrollIndicators(.hidden)
 			
 			HStack {
-				
+				//MARK: ADD BUTTON
 				Button {
 					
 					viewModel.addSection(track: track)
+					viewModel.selectedForEditing.track.fillMarkUpSections()
 					sharpTap()
 				} label: {
 					HStack {
@@ -1759,9 +1791,10 @@ extension ABPlayerView {
 	
 	var sectionEditingView: some View {
 		HStack {
-			
+			//MARK: ALL CHOOSABLE COLORS
 			ForEach(allColors, id: \.self) {  color in
 				var selectedColor = dCS.bgColor
+				//MARK: COLOR SELECT BUTTON
 				Button {
 					selectedColor = color
 					print(selectedColor)

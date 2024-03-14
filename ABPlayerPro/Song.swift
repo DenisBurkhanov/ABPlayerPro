@@ -30,9 +30,34 @@ struct AudioTrack:  Identifiable {
 		title = name
 		
 	}
-	mutating func startOfSection(index: Int, startTime: TimeInterval,  endTime: TimeInterval) {
-		sections[index].startTime = startTime
-		sections[index].endTime = endTime
+//	mutating func startOfSection(index: Int, startTime: TimeInterval,  endTime: TimeInterval) {
+//		sections[index].startTime = startTime
+//		sections[index].endTime = endTime
+//	}
+	
+	mutating func fillMarkUpSections(){
+		let sectionsSortedByStart = sections.sorted(by: { $0.startTime < $1.startTime })
+		var fixedArray: [Section] = []
+		
+		
+		for (index, value) in sectionsSortedByStart.enumerated() {
+		
+		
+			if index == (sectionsSortedByStart.count - 1) {
+				print("Last Index")
+				
+			
+				fixedArray.append(value)
+			
+			} else {
+				print("Not last Index")
+				var section = value
+				section.endTime = sectionsSortedByStart[(index + 1)].startTime
+				
+				fixedArray.append(section)
+			}
+		}
+		self.sections = fixedArray
 	}
 	
 }
