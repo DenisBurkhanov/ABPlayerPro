@@ -403,7 +403,7 @@ extension ABPlayerView {
 //MARK: A/B PAGE
 extension ABPlayerView {
 	
-	//MARK: A/B PAGE
+	//MARK: A/B PAGE Structure
 	var abPage: some View {
 		VStack {
 			let track = isSelectedA ? viewModel.audioEngineA.track : viewModel.audioEngineB.track
@@ -1088,7 +1088,7 @@ extension ABPlayerView {
 
 //MARK: SETUP/LIST PAGE
 extension ABPlayerView {
-	//MARK: SET PAGE
+	//MARK: SET PAGE  Structure
 	var setPage: some View {
 		VStack {
 			if editState == false {
@@ -1565,7 +1565,7 @@ extension ABPlayerView {
 		}
 		
 	}
-	
+	//MARK: MarkUp View
 	var editMarkUpSections: some View {
 
 		GeometryReader { geometry in
@@ -1602,7 +1602,6 @@ extension ABPlayerView {
 			.clipShape(RoundedRectangle(cornerRadius: 10))
 		}
 	}
-	
 	//MARK: SELECTED TRACK JOG
 	var selectedTrackJog: some View {
 		HStack {
@@ -1656,7 +1655,7 @@ extension ABPlayerView {
 			
 				
 				ForEach(track.sections.sorted(by: { $0.startTime < $1.startTime })) { section in
-					var colorEdit = false
+					@State var colorEdit = false
 					
 					
 
@@ -1707,10 +1706,7 @@ extension ABPlayerView {
 								.font(.system(size: 20))
 								.opacity(0.7)
 								.padding(.horizontal)
-//								.onTapGesture {
-//									
-//									viewModel.selectedForEditing.playFrom(time: section.startTime)
-//								}
+								
 								.gesture(
 									DragGesture(minimumDistance: 0)
 										.onChanged({ _ in
@@ -1730,7 +1726,7 @@ extension ABPlayerView {
 						} else {
 							Spacer()
 							
-							sectionEditingView
+							colorEditingView
 
 										
 						}
@@ -1789,7 +1785,7 @@ extension ABPlayerView {
 		}
 	}
 	
-	var sectionEditingView: some View {
+	var colorEditingView: some View {
 		HStack {
 			//MARK: ALL CHOOSABLE COLORS
 			ForEach(allColors, id: \.self) {  color in
