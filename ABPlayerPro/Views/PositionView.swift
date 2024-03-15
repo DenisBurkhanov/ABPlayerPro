@@ -31,15 +31,15 @@ struct PositionView: View {
 			let blockWidth = (geometry.size.width)
 			let duration = engine.duration
 			let progressBarWidth = ((blockWidth /  duration ) * position)
-			ZStack{
-				HStack {
-					LinearGradient(colors: [ Color.black, Color.white], startPoint: .leading, endPoint: .trailing)
-						.frame(width: (progressBarWidth > 0 ? progressBarWidth : 0 ))
-					Spacer()
-				}
-				Text("\(position)")
+			
+			HStack {
+				LinearGradient(colors: [ Color.black, Color.white], startPoint: .leading, endPoint: .trailing)
+					.frame(width: (progressBarWidth > 0 ? progressBarWidth : 0 ))
+				Spacer()
 			}
-				
+			
+			
+			
 			
 		}
 	}
@@ -48,7 +48,3 @@ struct PositionView: View {
 		self.engineNumber = engineNumber
 	}
 }
-
-//#Preview {
-//    PositionView()
-//}

@@ -32,7 +32,7 @@ struct ABPlayerView: View {
 	
 	@State private var isSelectedA = true
 	@State private var duration: TimeInterval = 0.0
-	@State private var jogOffset: CGFloat = 0.0
+	
 	@State private var nameOffset: CGFloat = 0
 	@State private var scale: CGFloat = 0
 	@State private var selectedTrackNumber = 0
@@ -216,7 +216,7 @@ extension ABPlayerView {
 		VStack {
 			let track = isSelectedA ? viewModel.audioEngineA.track : viewModel.audioEngineB.track
 			
-			meters
+			MeterBridge(vm: viewModel, engineNumber: isSelectedA ? 1 : 2)
 				.frame(height: 24)
 				.padding(.horizontal)
 			
@@ -243,15 +243,11 @@ extension ABPlayerView {
 					Wav(samples: track.waveform)
 						.opacity(0.4)
 				}
-				
-				
-					 
-					
 			}
 				.clipShape(RoundedRectangle(cornerRadius: 10))
 				.padding(.horizontal)
 				
-			jog
+			Jog(vm: viewModel, isItABPage: true)
 				.padding(.horizontal)
 				.frame(height: 65)
 			
@@ -593,52 +589,6 @@ extension ABPlayerView {
 		
 
 	}
-	
-	//MARK: JOG
-	var jog: some View {
-		HStack {
-			
-			ZStack {
-				
-				HStack(spacing: 40) {
-					ForEach((0 ..< 9), id: \.self) { _ in
-						Rectangle()
-							.frame(width: 2)
-							.foregroundColor(dCS.pastelPurpleLighter)
-							.opacity(0.5)
-							.shadow(radius: 3)
-					}
-				}
-				.offset(x: jogOffset, y: 0)
-				Rectangle().opacity(0.000001)
-			}
-			.gesture(
-				DragGesture()
-					.onChanged { value in
-
-						if viewModel.isPlaying {
-							viewModel.audioEngineA.audioPlayer?.pause()
-							viewModel.audioEngineB.audioPlayer?.pause()
-						}
-						
-						viewModel.audioEngineA.scrub(offsetTime: value.translation.width)
-						viewModel.audioEngineB.scrub(offsetTime: value.translation.width)
-						jogOffset = value.translation.width
-						
-						
-						
-					}
-					.onEnded({ value in
-						jogOffset = 0
-						if viewModel.isPlaying {
-							viewModel.audioEngineA.audioPlayer?.play()
-							viewModel.audioEngineB.audioPlayer?.play()
-						}
-					})
-			)
-			.clipShape(RoundedRectangle(cornerRadius: 10))
-		}
-	}
 	//MARK: PLAY BLOCK
 	var playBlock: some View {
 		ZStack {
@@ -822,7 +772,7 @@ extension ABPlayerView {
 					}
 						.clipShape(RoundedRectangle(cornerRadius: 10))
 						.frame(height: 50)
-					selectedTrackJog
+					Jog(vm: viewModel, isItABPage: false)
 						.frame(height: 50)
 					
 					
@@ -1075,6 +1025,8 @@ extension ABPlayerView {
 				Text("\(viewModel.selectedForEditing.track.title).\(viewModel.selectedForEditing.track.format)")
 					.foregroundColor(dCS.pastelPurpleLighter)
 					.font(.title2)
+					.lineLimit(1)
+					.minimumScaleFactor(0.5)
 			}
 			
 			
@@ -1145,42 +1097,6 @@ extension ABPlayerView {
 				
 			}
 			.frame(width: blockWidth)
-			.clipShape(RoundedRectangle(cornerRadius: 10))
-		}
-	}
-	//MARK: SELECTED TRACK JOG
-	var selectedTrackJog: some View {
-		HStack {
-			
-			ZStack {
-				
-				HStack(spacing: 40) {
-					ForEach((0 ..< 9), id: \.self) { _ in
-						Rectangle()
-							.frame(width: 2)
-							.foregroundColor(dCS.pastelPurpleLighter)
-							.opacity(0.5)
-					}
-				}
-				.offset(x: jogOffset, y: 0)
-				Rectangle().opacity(0.000001)
-			}
-			.gesture(
-				DragGesture()
-					.onChanged { value in
-						viewModel.selectedForEditing.audioPlayer?.rate = 0.5
-						
-						viewModel.selectedForEditing.scrub(offsetTime: value.translation.width)
-						jogOffset = value.translation.width
-						
-						
-					}
-					.onEnded({ value in
-						jogOffset = 0
-						viewModel.selectedForEditing.audioPlayer?.rate = 1
-						
-					})
-			)
 			.clipShape(RoundedRectangle(cornerRadius: 10))
 		}
 	}
