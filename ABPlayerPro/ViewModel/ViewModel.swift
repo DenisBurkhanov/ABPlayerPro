@@ -17,7 +17,7 @@ class ViewModel: ObservableObject {
 	
 	@Published var audioEngineA = AudioEngine()
 	@Published var audioEngineB = AudioEngine()
-	@Published var selectedForEditing = AudioEngine()
+	@ObservedObject var selectedForEditing = AudioEngine()
 
 	@Published var waveformModel = WaveformModel(url: emptyTrack.filePath)
 	
@@ -57,14 +57,16 @@ class ViewModel: ObservableObject {
 		audioEngineB.isPlaying = isPlaying
 		
 	}
-	func playFrom(time: TimeInterval ) {
-		audioEngineA.playFrom(time: time)
-		audioEngineB.playFrom(time: time)
-	}
-	func selectedTrackPlayFrom(time: TimeInterval ) {
-		selectedForEditing.playFrom(time: time)
+	func playFrom(time: TimeInterval, ab: Bool) {
+		if ab {
+			audioEngineA.playFrom(time: time)
+			audioEngineB.playFrom(time: time)
+		} else {
+			selectedForEditing.playFrom(time: time)
+		}
 		
 	}
+
 	func copySections() {
 		
 		copySectionsBuffer = selectedForEditing.track.sections

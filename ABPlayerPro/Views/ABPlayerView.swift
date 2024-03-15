@@ -228,15 +228,15 @@ extension ABPlayerView {
 				.padding()
 				
 			
-			labelLayer
+			LabelsBlock(vm: viewModel, isItABPage: true, isSelectedA: isSelectedA)
 				.padding(.horizontal)
 
 			ZStack {
 				
-				positionView
+				PositionView(vm: viewModel, engineNumber: isSelectedA ? 1 : 2)
 				
 					
-				sections
+				SectionsBlock(vm: viewModel, engineNumber: isSelectedA ? 1 : 2)
 				
 				if track.id != emptyTrack.id {
 				
@@ -593,124 +593,7 @@ extension ABPlayerView {
 		
 
 	}
-	//MARK: Labels
-	var labelLayer: some View {
-		HStack {
-			let position = isSelectedA ? viewModel.audioEngineA.positionInSeconds : viewModel.audioEngineB.positionInSeconds
-			Text(position)
-				.foregroundColor(dCS.pastelPurpleLighter)
-			
-			Spacer()
-			
-			
-			if (isSelectedA ? viewModel.audioEngineA.currentSectionLabel : viewModel.audioEngineB.currentSectionLabel) != "" {
-				Text(isSelectedA ? viewModel.audioEngineA.currentSectionLabel : viewModel.audioEngineB.currentSectionLabel)
-					.foregroundColor(dCS.pastelPurpleLighter)
-					.padding(.horizontal)
-					.background(dCS.darkerGray)
-					.clipShape(RoundedRectangle(cornerRadius: 10))
-			}
-			
-			
-			Spacer()
-			
-			Text(isSelectedA ? viewModel.audioEngineA.durationInSeconds : viewModel.audioEngineB.durationInSeconds)
-				.foregroundColor(dCS.pastelPurpleLighter)
-		}
-	}
-	//MARK: position
-	var positionView: some View {
-
-		GeometryReader { geometry in
-			let padding: CGFloat = 0.0000001
-			let position = viewModel.playbackPosition
-			let blockWidth = (geometry.size.width)
-			let duration = (isSelectedA ? viewModel.audioEngineA.duration : viewModel.audioEngineB.duration)
-			let progressBarWidth = ((blockWidth /  duration ) * position)
-
-
-
-			ZStack {
-
-				HStack {
-
-					LinearGradient(colors: [ Color.black, Color.white], startPoint: .leading, endPoint: .trailing)
-						.frame(width: (progressBarWidth - padding > 0 ? progressBarWidth - padding : 0 ))
-
-
-
-					if progressBarWidth < blockWidth {
-						Spacer()
-					}
-				}
-			}
-			
-			.clipShape(RoundedRectangle(cornerRadius: 10))
-		}
-		
-	}
-	//MARK: SECTIONS
-	var sections: some View {
-
-		GeometryReader { geometry in
-			let padding: CGFloat = 0.0000001
-			let blockWidth = (geometry.size.width)
-			let duration = (isSelectedA ? viewModel.audioEngineA.duration : viewModel.audioEngineB.duration)
-			
-			ZStack {
-
-//				if isSelectedA {
-//					let wave = viewModel.audioEngineA.track.waveform
-//
-//					ZStack {
-//						RoundedRectangle(cornerRadius: 1)
-//							.opacity(0.0)
-//						HStack(alignment: .center, spacing: 0) {
-//							ForEach(wave, id: \.self) { height in
-//
-//									RoundedRectangle(cornerRadius: 1)
-//										.foregroundColor(.white)
-//										.frame(height: (height * 100 ))
-//							}
-//						}
-//					}
-//					.opacity(0.4)
-//
-//				}
-
-
-				HStack(spacing: 0) {
-					let track = isSelectedA ? viewModel.audioEngineA.track : viewModel.audioEngineB.track
-
-					
-						ForEach(track.sections.sorted(by: { $0.startTime < $1.startTime } )) { section in
-							let sectionStart = section.startTime
-							let sectionEnd = ((blockWidth / (duration - padding) ) * (section.endTime - sectionStart ))
-
-
-
-							sectionView(section: section)
-								.frame(width: (sectionEnd >= 0 ? sectionEnd : 0 ))
-
-								.onTapGesture {
-									viewModel.playFrom(time: section.startTime)
-									dullTap()
-
-								}
-//								.onLongPressGesture(minimumDuration: 0.5) {
-//									var newValue = section
-//									newValue.loop.toggle()
-//									track.sections[key] = newValue
-////									viewModel.loopSection(section: section, loopOn: newValue.loop)
-//
-//								}
-						}
-				}
-			}
-			.frame(width: blockWidth)
-			
-		}
-	}
+	
 	//MARK: JOG
 	var jog: some View {
 		HStack {
@@ -742,12 +625,7 @@ extension ABPlayerView {
 						viewModel.audioEngineB.scrub(offsetTime: value.translation.width)
 						jogOffset = value.translation.width
 						
-						@State var offsetCounter: CGFloat = 0
-						offsetCounter = value.translation.width
-						if offsetCounter > 20 {
-							offsetCounter = 0
-							dullTap()
-						}
+						
 						
 					}
 					.onEnded({ value in
@@ -925,18 +803,21 @@ extension ABPlayerView {
 						editView
 					}
 					selectedTrackTitle
-					selectedTrackLabelLayer
+					LabelsBlock(vm: viewModel, isItABPage: false, isSelectedA: isSelectedA)
 					ZStack {
-						selectedTrackPositionView
-						if !editState {
-							selectedTrackSections
-						}
+						PositionView(vm: viewModel, engineNumber: 0)
+						
 						
 						Wav(samples: viewModel.selectedForEditing.track.waveform)
 							.opacity(0.4)
-						if editState {
+						
+						
+						if !editState {
+							SectionsBlock(vm: viewModel, engineNumber: 0)
+						} else {
 							editMarkUpSections
 						}
+						
 						
 					}
 						.clipShape(RoundedRectangle(cornerRadius: 10))
@@ -1230,99 +1111,6 @@ extension ABPlayerView {
 		
 		
 	}
-	//MARK: SELECTED TRACK LABLES
-	var selectedTrackLabelLayer: some View {
-		HStack {
-			Text(viewModel.selectedForEditing.positionInSeconds)
-				.foregroundColor(dCS.pastelPurpleLighter)
-			
-			Spacer()
-			
-			
-			if (viewModel.selectedForEditing.currentSectionLabel) != "" {
-				Text(viewModel.selectedForEditing.currentSectionLabel)
-					.foregroundColor(dCS.pastelPurpleLighter)
-					.padding(.horizontal)
-					.background(dCS.darkerGray)
-					.clipShape(RoundedRectangle(cornerRadius: 10))
-			}
-			
-			
-			Spacer()
-			
-			Text(viewModel.selectedForEditing.durationInSeconds)
-				.foregroundColor(dCS.pastelPurpleLighter)
-		}
-	}
-	//MARK: SELECTED TRACK SECTIONS
-	var selectedTrackSections: some View {
-
-		GeometryReader { geometry in
-			let padding: CGFloat = 0.0000001
-			let blockWidth = (geometry.size.width)
-			let duration = (viewModel.selectedForEditing.duration)
-			
-			ZStack {
-
-
-
-
-				HStack(spacing: 0) {
-					let track = viewModel.selectedForEditing.track
-
-					
-						ForEach(track.sections.sorted(by: { $0.startTime < $1.startTime } )) { section in
-							let sectionStart = section.startTime
-							let sectionEnd = ((blockWidth / (duration - padding) ) * (section.endTime - sectionStart ))
-//							let sectionDuration = sectionEnd - sectionStart
-
-
-
-							sectionView(section: section)
-								.frame(width: (sectionEnd >= 0 ? sectionEnd : 0 ))
-
-								.onTapGesture {
-									viewModel.selectedTrackPlayFrom(time: section.startTime)
-									dullTap()
-								}
-								
-							
-								
-						}
-				}
-			}
-			.frame(width: blockWidth)
-			.clipShape(RoundedRectangle(cornerRadius: 10))
-		}
-	}
-	//MARK: SELECTED TRACK CURRENT POSITION
-	var selectedTrackPositionView: some View {
-
-		GeometryReader { geometry in
-			let position = viewModel.selectedForEditing.playbackPosition
-			let blockWidth = (geometry.size.width)
-			let duration = (viewModel.selectedForEditing.duration)
-			let progressBarWidth = ((blockWidth /  duration ) * position)
-
-
-
-			ZStack {
-
-				HStack {
-
-					LinearGradient(colors: [ Color.black, Color.white], startPoint: .leading, endPoint: .trailing)
-						.frame(width: (progressBarWidth > 0 ? progressBarWidth : 0 ))
-
-
-
-					Spacer()
-				}
-			}
-			
-			.clipShape(RoundedRectangle(cornerRadius: 10))
-		}
-		
-	}
 	//MARK: MarkUp View
 	var editMarkUpSections: some View {
 
@@ -1569,9 +1357,7 @@ extension ABPlayerView {
 }
 
 
-struct ABPlayerView_Previews: PreviewProvider {
-    static var previews: some View {
-		ABPlayerView()
-		
-    }
+
+#Preview {
+	ABPlayerView()
 }
