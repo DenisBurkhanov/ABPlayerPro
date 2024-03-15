@@ -16,10 +16,12 @@ import Waveform
 
 struct ABPlayerView: View {
 	
+	
+	
 	@ObservedObject private var viewModel = ViewModel()
 	@State var appState = 0
 	@State var haptixEngine: CHHapticEngine?
-	
+	@State var haptix = Haptix()
 	
 	@State private var isShowingDocumentPicker = false
 	@State private var showAlert = false
@@ -77,7 +79,7 @@ struct ABPlayerView: View {
 			
 
 			configureAudioSession()
-			prepareHaptix()
+			haptix.prepareHaptix()
 		}
 		.onReceive(timer) { _ in
 			if isGearShown {
@@ -98,7 +100,7 @@ struct ABPlayerView: View {
 					loudnessTimer = 0
 					viewModel.audioEngineA.calcResultAvgBuffer()
 					viewModel.audioEngineB.calcResultAvgBuffer()
-					sharpTap()
+					haptix.sharpTap()
 					isCompensationAvailable = true
 					
 					
@@ -169,7 +171,7 @@ extension ABPlayerView {
 				
 				Spacer()
 				Button {
-					sharpTap()
+					haptix.sharpTap()
 					isGearShown = true
 					DispatchQueue.global().async {
 						viewModel.createDataFolderIfNeeded()
@@ -179,7 +181,7 @@ extension ABPlayerView {
 								isGearShown = false
 								viewModel.allTracks = libChecker.bufferForAllTRacks
 								appState = 1
-								doubleTap()
+								haptix.doubleTap()
 							}
 							
 						}
@@ -235,14 +237,19 @@ extension ABPlayerView {
 				
 				PositionView(vm: viewModel, engineNumber: isSelectedA ? 1 : 2)
 				
+				if track.id != emptyTrack.id {
+					ZStack {
+						Wav(samples: viewModel.audioEngineA.track.waveform)
+							.opacity(isSelectedA ? 0.7 : 0.0)
+						Wav(samples: viewModel.audioEngineB.track.waveform)
+							.opacity(isSelectedA ? 0.0 : 0.7)
+					}
+					
+				}
 					
 				SectionsBlock(vm: viewModel, engineNumber: isSelectedA ? 1 : 2)
 				
-				if track.id != emptyTrack.id {
 				
-					Wav(samples: track.waveform)
-						.opacity(0.4)
-				}
 			}
 				.clipShape(RoundedRectangle(cornerRadius: 10))
 				.padding(.horizontal)
@@ -259,201 +266,21 @@ extension ABPlayerView {
 	
 	
 	
-	//MARK: METERS
-	var meters: some View {
-		
-		
-		GeometryReader(content: { geometry in
-			
-			let elementHeight = geometry.size.height / 4
-			let elementWidth = (geometry.size.width - 0)
-			let leftChannel  = ( isSelectedA ? viewModel.audioEngineA.logPowerL : viewModel.audioEngineB.logPowerL )
-			let rightChannel = ( isSelectedA ? viewModel.audioEngineA.logPowerR : viewModel.audioEngineB.logPowerR )
-			let leftPeak     = (isSelectedA ? viewModel.audioEngineA.peakL : viewModel.audioEngineB.peakL )
-			let rightPeak    = (isSelectedA ? viewModel.audioEngineA.peakR : viewModel.audioEngineB.peakR)
-			let correlation  = (leftChannel - rightChannel)
-			
-			let meterColor = dCS.pastelBlue
-			
-			
-			
-			
-			HStack {
-				VStack(spacing: 1) {
-					//MARK: Digits
-					HStack{
-						
-						ZStack {
-							ForEach(dbNumbers, id: \.self) { db in
-								let log = pow(10, db / 20.0)
-								let dbint = Int(db)
-								
-								Text("\(dbint)")
-									.font(.system(size: 7))
-									.foregroundColor(.white)
-									.frame(height: elementHeight)
-									.offset(x: (elementWidth * log) - 5)
-								
-							}
-							
-						}
-						
-						Spacer()
-					}
-					Rectangle()
-						.frame(width: elementWidth, height: elementHeight)
-						.foregroundColor(dCS.darkerGray)
-					
-						.overlay(
-							ZStack {
-								//MARK: Marks
-								HStack {
-									ZStack{
-										ForEach(dbNumbers, id: \.self) { db in
-											let log = pow(10, db / 20.0)
-											
-											Rectangle()
-												.foregroundColor(.white)
-												.frame(width: 1, height: elementHeight)
-												.offset(x: (elementWidth * log) )
-												.opacity(0.4)
-											
-										}
-									}
-									Spacer()
-								}
-								
-								
-								//MARK: LEFT CHANNEL
-								ZStack {
-									//Average
-									HStack {
-										Rectangle()
-										
-											.foregroundColor(meterColor)
-											.frame(width: leftChannel * elementWidth, height: elementHeight)
-											.opacity(0.9)
-										if leftChannel < 0.99 {
-											Spacer()
-										} else {
-											Spacer()
-												.frame(width: 0)
-										}
-										
-									}
-									//Peak
-									HStack {
-										Rectangle()
-										
-											.foregroundColor(meterColor)
-											.frame(width: 2, height: elementHeight)
-											.offset(x: leftPeak * elementWidth)
-											.opacity(0.9)
-										Spacer()
-										
-										
-									}
-								}
-							}
-						)
-					Rectangle()
-						.frame(width: elementWidth, height: elementHeight)
-						.foregroundColor(dCS.darkerGray)
-					
-						.overlay(
-							ZStack {
-								//MARK: Marks
-								HStack {
-									ZStack{
-										ForEach(dbNumbers, id: \.self) { db in
-											let log = pow(10, db / 20.0)
-											
-											Rectangle()
-												.foregroundColor(.white)
-												.frame(width: 1, height: elementHeight)
-												.offset(x: (elementWidth * log) )
-												.opacity(0.4)
-											
-										}
-									}
-									Spacer()
-								}
-								
-								//MARK: RIGHT CHANNEL
-								ZStack {
-									//Average
-									HStack {
-										Rectangle()
-											.frame(width: rightChannel * elementWidth, height: elementHeight)
-											.foregroundColor(meterColor)
-											.opacity(0.9)
-										if leftChannel < 0.99 {
-											Spacer()
-										} else {
-											Spacer()
-												.frame(width: 0)
-										}
-										
-									}
-									//Peak
-									HStack {
-										Rectangle()
-										
-											.foregroundColor(meterColor)
-											.frame(width: 2, height: elementHeight)
-											.offset(x: rightPeak * elementWidth)
-											.opacity(0.9)
-										Spacer()
-										
-									}
-								}
-							}
-						)
-					
-					Rectangle()
-						.frame(width: elementWidth, height: elementHeight)
-						.foregroundColor(dCS.darkerGray)
-					
-						.overlay(
-							HStack {
-								ZStack {
-									Rectangle()
-										.frame(width: elementWidth / 100, height: elementHeight)
-										.foregroundColor(.white)
-									
-									//MARK: CORRELATION
-									Rectangle()
-										.frame(width: 0.01 * elementWidth, height: elementHeight)
-										.foregroundColor(meterColor)
-										.offset(x: (-correlation * (elementWidth / 2)), y: 0)
-									
-								}
-								
-							}
-						)
-				}
-			}
-			
-			
-			
-			
-		})
-	}
 	//MARK: TRACK PICKER
 	var tracksAssined: some View {
 		Button {
 			if appState == 1 {
 				withAnimation(.smooth) {
 					appState = 2
-					prepareHaptix()
-					doubleTap()
+//					prepareHaptix()
+					haptix.doubleTap()
 				}
 				
 			} else if appState == 2 {
 				withAnimation(.snappy) {
 					appState = 1
-					prepareHaptix()
-					doubleTap()
+//					prepareHaptix()
+					haptix.doubleTap()
 				}
 				
 				viewModel.audioEngineA.audioPlayer?.stop()
@@ -599,7 +426,7 @@ extension ABPlayerView {
 					viewModel.pauseSong()
 				}
 				
-				sharpTap()
+				haptix.sharpTap()
 			} label: {
 				ZStack {
 					Circle()
@@ -639,7 +466,7 @@ extension ABPlayerView {
 					Button {
 						if !loudnessAnalyzingStatus {
 							loudnessAnalyzingStatus = true
-							sharpTap()
+							haptix.sharpTap()
 						}
 						
 	
@@ -659,7 +486,15 @@ extension ABPlayerView {
 						Button {
 							if !viewModel.normalized {
 								viewModel.normalized = true
+//								viewModel.audioEngineA.audioPlayer?.pause()
+//								viewModel.audioEngineB.audioPlayer?.pause()
+//								viewModel.isPlaying = false
 								viewModel.applyCompensation()
+								if isSelectedA {
+									viewModel.audioEngineB.audioPlayer?.volume = 0
+								} else {
+									viewModel.audioEngineA.audioPlayer?.volume = 0
+								}
 							} else {
 								viewModel.normalized = false
 								if isSelectedA {
@@ -673,7 +508,7 @@ extension ABPlayerView {
 								
 							}
 							
-							doubleTap()
+							haptix.doubleTap()
 						} label: {
 							ZStack {
 								Circle()
@@ -849,7 +684,7 @@ extension ABPlayerView {
 						Button {
 							viewModel.switchTrackA(track: track)
 							viewModel.audioEngineA.setupAudioPlayer()
-							sharpTap()
+							haptix.sharpTap()
 							
 							if isSelectedA {
 								viewModel.audioEngineB.audioPlayer?.volume = 0
@@ -898,11 +733,11 @@ extension ABPlayerView {
 //									sectionsForRenaming = viewModel.selectedForEditing.track.sections
 									viewModel.selectedForEditing.setupAudioPlayer()
 									viewModel.selectedForEditing.audioPlayer?.volume = 1
-									sharpTap()
+									haptix.sharpTap()
 								}
 								.onLongPressGesture(minimumDuration: 0.5) {
 									showAlert = true
-									doubleTap()
+									haptix.doubleTap()
 									
 								}
 							
@@ -930,7 +765,7 @@ extension ABPlayerView {
 						Button {
 							viewModel.switchTrackB(track: track)
 							viewModel.audioEngineB.setupAudioPlayer()
-							sharpTap()
+							haptix.sharpTap()
 							
 							if isSelectedA {
 								viewModel.audioEngineB.audioPlayer?.volume = 0
@@ -950,7 +785,7 @@ extension ABPlayerView {
 				.alert("Delete track?",isPresented: $showAlert) {
 					Button(role: .destructive) {
 						viewModel.deleteTrack(track: track)
-						sharpTap()
+						haptix.sharpTap()
 						
 					} label: {
 						Text("Delete")
@@ -1041,7 +876,7 @@ extension ABPlayerView {
 					editState = true
 				}
 				
-				sharpTap()
+				haptix.sharpTap()
 			} label: {
 				ZStack {
 					Circle()
@@ -1161,7 +996,7 @@ extension ABPlayerView {
 								.gesture(
 									DragGesture(minimumDistance: 0)
 										.onChanged({ _ in
-											sharpTap()
+											haptix.sharpTap()
 											viewModel.selectedForEditing.playFrom(time: viewModel.selectedForEditing.track.sections[index].startTime)
 											viewModel.selectedForEditing.audioPlayer?.play()
 										})
@@ -1196,8 +1031,7 @@ extension ABPlayerView {
 					
 					viewModel.addSection(track: track)
 					viewModel.selectedForEditing.track.fillMarkUpSections()
-//					sectionsForRenaming = viewModel.selectedForEditing.track.sections
-					sharpTap()
+					haptix.sharpTap()
 				} label: {
 					HStack {
 						ZStack{

@@ -63,9 +63,7 @@ struct Jog: View {
 							engineC.scrub(offsetTime: value.translation.width)
 							
 						}
-						
-						
-						
+
 						jogOffset = value.translation.width
 						
 						
@@ -83,14 +81,18 @@ struct Jog: View {
 								engineC.audioPlayer?.play()
 							}
 						}
-						
 					})
+				
 			)
 			.clipShape(RoundedRectangle(cornerRadius: 10))
 		}
+		
 	}
+		
+	
 	init(vm: ViewModel, isItABPage: Bool){
 		self.vm = vm
 		self.isItABPage = isItABPage
 	}
+		
 }

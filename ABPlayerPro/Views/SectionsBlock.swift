@@ -52,8 +52,9 @@ struct SectionsBlock: View {
 
 								.onTapGesture {
 									vm.playFrom(time: section.startTime, ab: ab)
-//									dullTap()
+//									haptixEngine.dullTap()
 								}
+							
 								
 							
 								

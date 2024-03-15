@@ -12,6 +12,7 @@ import Waveform
 
 class ViewModel: ObservableObject {
 	
+	
 
 	@Published var allTracks: [ AudioTrack ] = []
 	
@@ -102,12 +103,14 @@ class ViewModel: ObservableObject {
 			let difference = avgA - avgB
 						
 			audioEngineA.adjustVolume( by: Float(difference))
+//			audioEngineB.audioPlayer?.volume = 0
 			audioEngineB.defaultVolumeOffset()
 		} else {
 			print("B > A")
 			let difference = avgB - avgA
 			
 			audioEngineB.adjustVolume( by: Float(difference))
+//			audioEngineA.audioPlayer?.volume = 0
 			audioEngineA.defaultVolumeOffset()
 		}
 	}
