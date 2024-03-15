@@ -10,9 +10,6 @@ import Foundation
 import SwiftUI
 import Waveform
 
-
-
-
 struct AudioTrack:  Identifiable {
 	var id = UUID()
 	var filePath: URL
@@ -24,16 +21,7 @@ struct AudioTrack:  Identifiable {
 	var waveform: SampleBuffer = SampleBuffer(samples: [0])
 //	var waveformR: [CGFloat] = []
 	
-	
-	
-	mutating func reName(name: String){
-		title = name
-		
-	}
-//	mutating func startOfSection(index: Int, startTime: TimeInterval,  endTime: TimeInterval) {
-//		sections[index].startTime = startTime
-//		sections[index].endTime = endTime
-//	}
+
 	
 	mutating func fillMarkUpSections(){
 		let sectionsSortedByStart = sections.sorted(by: { $0.startTime < $1.startTime })
@@ -57,16 +45,13 @@ struct AudioTrack:  Identifiable {
 				fixedArray.append(section)
 			}
 		}
+		
 		self.sections = fixedArray
 	}
 	
+	
 }
-//struct EmptyAudioTrack: AudioTrackProtocol{
-//	var title: String = ""
-//	var format: String = ""
-//	
-//	
-//}
+
 
 
 struct Section: Identifiable {
@@ -83,12 +68,4 @@ struct Section: Identifiable {
 	
 }
 
-//extension Color: Codable {
-//	public func encode(to encoder: Encoder) throws {
-//		<#code#>
-//	}
-//	
-//	public init(from decoder: Decoder) throws {
-//		<#code#>
-//	}
-//}
+

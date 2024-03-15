@@ -12,200 +12,7 @@ import Waveform
 
 
 
-class ViewModel: ObservableObject {
-	
 
-	@Published var allTracks: [ AudioTrack ] = []
-	
-	
-
-	
-	
-	@Published var audioEngineA = AudioEngine()
-	@Published var audioEngineB = AudioEngine()
-	@Published var selectedForEditing = AudioEngine()
-
-	
-	@Published var waveformModel = WaveformModel(url: emptyTrack.filePath)
-	
-	
-	
-	@Published var isPlaying = false
-	@Published var isLooped = false
-	@Published var playbackPosition: TimeInterval = 0.0
-	@Published var normalized = false
-	
-	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
-	var copySectionsBuffer: [Section] = []
-
-	
-	let formatter = DateComponentsFormatter()
-	
-	
-	
-	
-	func switchTrackA(track: AudioTrack) {
-		audioEngineA = AudioEngine(track: track)
-	}
-	func switchTrackB(track: AudioTrack) {
-		audioEngineB = AudioEngine(track: track)
-	}
-	
-	func playSong() {
-		audioEngineA.audioPlayer?.play()
-		audioEngineB.audioPlayer?.play()
-		
-		isPlaying = true
-		audioEngineA.isPlaying = isPlaying
-		audioEngineB.isPlaying = isPlaying
-		
-
-	}
-	func pauseSong() {
-		audioEngineA.audioPlayer?.pause()
-		audioEngineB.audioPlayer?.pause()
-		isPlaying = false
-		audioEngineA.isPlaying = isPlaying
-		audioEngineB.isPlaying = isPlaying
-		
-	}
-	func playFrom(time: TimeInterval ) {
-		audioEngineA.playFrom(time: time)
-		audioEngineB.playFrom(time: time)
-	}
-	func selectedTrackPlayFrom(time: TimeInterval ) {
-		selectedForEditing.playFrom(time: time)
-		
-	}
-	func copySections() {
-		copySectionsBuffer = selectedForEditing.track.sections
-	}
-	func pasteSections() {
-
-		selectedForEditing.track.sections = copySectionsBuffer
-	}
-	func applyChanges() {
-		
-
-		let idValue = selectedForEditing.track.id
-		for _ in allTracks {
-			if let index = allTracks.firstIndex(where: { $0.id == idValue }) {
-				
-				allTracks.remove(at: index)
-				print(allTracks.count)
-				allTracks.append(selectedForEditing.track)
-				print(allTracks.count)
-			}
-		}
-		
-	}
-
-	
-	func applyCompensation() {
-		let avgA = audioEngineA.resultAvgBuffer
-		let avgB = audioEngineB.resultAvgBuffer
-		if avgA > avgB {
-			print("A > B")
-			let difference = avgA - avgB
-						
-			audioEngineA.adjustVolume( by: Float(difference))
-			audioEngineB.defaultVolumeOffset()
-		} else {
-			print("B > A")
-			let difference = avgB - avgA
-			
-			audioEngineB.adjustVolume( by: Float(difference))
-			audioEngineA.defaultVolumeOffset()
-		}
-	}
-	
-	func addSection(track: AudioTrack) {
-		if track.sections.isEmpty && selectedForEditing.playbackPosition != 0 {
-			print("Add section non-zero condition")
-			selectedForEditing.track.sections.append(Section(title: "Section", startTime: 0, endTime: selectedForEditing.playbackPosition, color: allColors.randomElement() ?? dCS.bgColor))
-		}
-		selectedForEditing.track.sections.append(Section(title: "Section", startTime: selectedForEditing.playbackPosition,endTime: selectedForEditing.duration, color: allColors.randomElement() ?? dCS.bgColor))
-	}
-	func removeSection(track: AudioTrack, id: UUID) {
-		
-	
-	}
-
-	
-	
-	//files management
-	func addNewTrack(fileURL: URL){
-		
-		
-//		let fileURL = destinationURL.appendingPathComponent(file)
-		let fileName = fileURL.lastPathComponent
-		let title = fileName.replacingOccurrences(of: ".\(fileURL.pathExtension)", with: "")
-		let format = fileURL.pathExtension
-		waveformModel = WaveformModel(url: fileURL)
-		let wave = waveformModel.samples
-		
-		
-		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format, waveform: wave)
-		
-		
-		
-		self.allTracks.append(audioTrack)
-		
-		
-		
-	}
-	
-	func deleteTrack(track: AudioTrack){
-		do {
-			try FileManager.default.removeItem(at: track.filePath)
-			for (index, value) in allTracks.enumerated() {
-				if value.id == track.id {
-					allTracks.remove(at: index)
-				}
-			}
-			
-			print("\(track.title) gone")
-		} catch {
-			print("Some error")
-		}
-	}
-	
-	func createDataFolderIfNeeded() {
-			
-		let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-		let dataFolderURL = documentsDirectory.appendingPathComponent("ABPro").appendingPathComponent("Tracks")
-
-			do {
-				// Check if the folder already exists
-				var isDirectory: ObjCBool = false
-				if !FileManager.default.fileExists(atPath: dataFolderURL.path, isDirectory: &isDirectory) {
-					// If not, create it
-					try FileManager.default.createDirectory(at: dataFolderURL, withIntermediateDirectories: true, attributes: nil)
-					print("Data folder created successfully")
-					print(dataFolderURL)
-					
-				} else {
-					print("Data folder already exists")
-					print(dataFolderURL)
-				}
-			} catch {
-				print("Error creating data folder: \(error.localizedDescription)")
-			}
-		}
-	func analizeTrackWaves(track: AudioTrack) {
-		waveformModel = WaveformModel(url: track.filePath)
-		let wave = waveformModel.samples
-		for (index, value) in allTracks.enumerated() {
-			if value.id == track.id {
-				allTracks.remove(at: index)
-			}
-			
-		}
-		let audioTrack = AudioTrack(filePath: track.filePath, title: track.title, format: track.format, waveform: wave)
-		allTracks.append(audioTrack)
-	}
-	
-}
 
 struct ABPlayerView: View {
 	
@@ -213,7 +20,7 @@ struct ABPlayerView: View {
 	@State var appState = 0
 	@State var haptixEngine: CHHapticEngine?
 	
-
+	
 	@State private var isShowingDocumentPicker = false
 	@State private var showAlert = false
 	
@@ -230,6 +37,7 @@ struct ABPlayerView: View {
 	@State private var scale: CGFloat = 0
 	@State private var selectedTrackNumber = 0
 	@State private var editState = false
+//	@State var sectionsForRenaming: [Section] = []
 	
 	@State private var volA: CGFloat = 0
 	@State private var volB: CGFloat = 0
@@ -814,6 +622,7 @@ extension ABPlayerView {
 	var positionView: some View {
 
 		GeometryReader { geometry in
+			let padding: CGFloat = 0.0000001
 			let position = viewModel.playbackPosition
 			let blockWidth = (geometry.size.width)
 			let duration = (isSelectedA ? viewModel.audioEngineA.duration : viewModel.audioEngineB.duration)
@@ -826,7 +635,7 @@ extension ABPlayerView {
 				HStack {
 
 					LinearGradient(colors: [ Color.black, Color.white], startPoint: .leading, endPoint: .trailing)
-						.frame(width: (progressBarWidth > 0 ? progressBarWidth : 0 ))
+						.frame(width: (progressBarWidth - padding > 0 ? progressBarWidth - padding : 0 ))
 
 
 
@@ -1130,6 +939,7 @@ extension ABPlayerView {
 						}
 						
 					}
+						.clipShape(RoundedRectangle(cornerRadius: 10))
 						.frame(height: 50)
 					selectedTrackJog
 						.frame(height: 50)
@@ -1195,7 +1005,7 @@ extension ABPlayerView {
 	var listOfTracks: some View {
 		
 		ScrollView {
-//			ForEach(viewModel.allTracks.sorted(by: { $0.title < $1.title })) { track in
+
 			ForEach(viewModel.allTracks) { track in
 				
 				HStack {
@@ -1215,16 +1025,12 @@ extension ABPlayerView {
 							} else {
 								viewModel.audioEngineA.audioPlayer?.volume = 0
 							}
-							
-							
 						} label: {
 							Image(systemName: "circle.dotted")
 								.foregroundColor(dCS.pastelBlue)
 								.opacity(0.7)
 								.font(.system(size: 25))
 						}
-						
-						
 					}
 					
 					Spacer()
@@ -1258,7 +1064,7 @@ extension ABPlayerView {
 								.onTapGesture {
 									
 									viewModel.selectedForEditing = AudioEngine(track: track)
-									
+//									sectionsForRenaming = viewModel.selectedForEditing.track.sections
 									viewModel.selectedForEditing.setupAudioPlayer()
 									viewModel.selectedForEditing.audioPlayer?.volume = 1
 									sharpTap()
@@ -1274,23 +1080,7 @@ extension ABPlayerView {
 							
 							Spacer()
 							
-							//							Button {
-							//
-							//
-							//							} label: {
-							//								if track.waveform.isEmpty {
-							//									Text("ANALYZING")
-							//										.scaleEffect(0.5)
-							//										.opacity(0.7)
-							//										.foregroundColor(dCS.pastelPurpleLighter)
-							//										.padding(1)
-							//
-							//								} else {
-							//									Image(systemName: "waveform")
-							//										.foregroundColor(dCS.pastelPurpleLighter)
-							//										.padding(.horizontal)
-							//								}
-							//							}
+							
 						}
 					}
 					
@@ -1351,13 +1141,10 @@ extension ABPlayerView {
 					}
 				} label: {
 					ZStack {
-						
-						
 						Circle()
 							.foregroundColor(dCS.pastelBlue)
 							.shadow(radius: 10)
-						
-						
+
 						if  viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false {
 							Image(systemName: "pause.fill")
 								.scaleEffect(1.8)
@@ -1378,52 +1165,31 @@ extension ABPlayerView {
 					viewModel.copySections()
 				} label: {
 					ZStack {
-						
-						
 						Circle()
 							.foregroundColor(dCS.pastelBlue)
 							.shadow(radius: 10)
-						
-						
-						
 						Text("COPY")
 							.font(.system(size: 13))
 							.foregroundColor(dCS.bgColor)
-						
-						
-						
-						
 					}
 					.frame(height: 50)
 				}
-				
 				
 				Button {
 					viewModel.pasteSections()
+//					viewModel.selectedForEditing.track.sections = sectionsForRenaming
 				} label: {
 					ZStack {
-						
-						
 						Circle()
 							.foregroundColor(dCS.pastelBlue)
 							.shadow(radius: 10)
-						
-						
-						
 						Text("PASTE")
 							.font(.system(size: 13))
 							.foregroundColor(dCS.bgColor)
-						
-						
-						
-						
 					}
 					.frame(height: 50)
 				}
-				
-				
-				
-				
+	
 			} else {
 				Text("\(viewModel.selectedForEditing.track.title).\(viewModel.selectedForEditing.track.format)")
 					.foregroundColor(dCS.pastelPurpleLighter)
@@ -1435,24 +1201,19 @@ extension ABPlayerView {
 			
 			Button {
 				if editState {
-//
+					
 					viewModel.applyChanges()
 					editState = false
 				} else {
 					editState = true
-
 				}
 				
 				sharpTap()
 			} label: {
 				ZStack {
-					
-					
 					Circle()
 						.foregroundColor(dCS.pastelBlue)
 						.shadow(radius: 10)
-					
-					
 					if editState == false {
 						Text("EDIT")
 							.font(.system(size: 13))
@@ -1462,9 +1223,6 @@ extension ABPlayerView {
 							.font(.system(size: 13))
 							.foregroundColor(dCS.bgColor)
 					}
-					
-					
-					
 				}
 				.frame(height: 50)
 			}
@@ -1643,6 +1401,7 @@ extension ABPlayerView {
 		VStack {
 
 			let track = viewModel.selectedForEditing.track
+			
 
 			Text("\(track.title).\(track.format)")
 				.foregroundColor(dCS.pastelPurpleLighter)
@@ -1654,25 +1413,13 @@ extension ABPlayerView {
 			ScrollView {
 			
 				
-				ForEach(track.sections.sorted(by: { $0.startTime < $1.startTime })) { section in
-					@State var colorEdit = false
-					
-					
-
+				ForEach(track.sections.indices, id: \.self) { index in
+					let colorEdit = false
 
 					HStack {
 						
 						Button {
-							if colorEdit {
-								colorEdit = false
-								print("Color edit is off now")
-								
-							} else {
-								colorEdit = true
-								print("Color edit is on now")
-							}
-							
-							
+						
 						} label: {
 							HStack {
 								
@@ -1682,7 +1429,7 @@ extension ABPlayerView {
 										.frame(height: 25)
 										.scaleEffect(1.5)
 									Circle()
-										.foregroundColor(section.color)
+										.foregroundColor(track.sections[index].color)
 										.frame(height: 30)
 										.shadow(radius: 10)
 								}
@@ -1694,7 +1441,7 @@ extension ABPlayerView {
 						if !colorEdit {
 							
 							
-							Text(section.title)
+							Text("Section")
 								.foregroundColor(dCS.pastelPurpleLighter)
 								.padding(.horizontal)
 							Spacer()
@@ -1711,7 +1458,7 @@ extension ABPlayerView {
 									DragGesture(minimumDistance: 0)
 										.onChanged({ _ in
 											sharpTap()
-											viewModel.selectedForEditing.playFrom(time: section.startTime)
+											viewModel.selectedForEditing.playFrom(time: viewModel.selectedForEditing.track.sections[index].startTime)
 											viewModel.selectedForEditing.audioPlayer?.play()
 										})
 										
@@ -1745,6 +1492,7 @@ extension ABPlayerView {
 					
 					viewModel.addSection(track: track)
 					viewModel.selectedForEditing.track.fillMarkUpSections()
+//					sectionsForRenaming = viewModel.selectedForEditing.track.sections
 					sharpTap()
 				} label: {
 					HStack {
@@ -1764,10 +1512,6 @@ extension ABPlayerView {
 								.opacity(0.7)
 						}
 						
-						
-						
-						
-							
 						Text("ADD SECTION")
 							.foregroundColor(dCS.pastelPurpleLighter)
 							.padding(.horizontal)
@@ -1788,17 +1532,17 @@ extension ABPlayerView {
 	var colorEditingView: some View {
 		HStack {
 			//MARK: ALL CHOOSABLE COLORS
-			ForEach(allColors, id: \.self) {  color in
-				var selectedColor = dCS.bgColor
+			ForEach(allColors.indices, id: \.self) {  index in
+				@State var selectedColor = dCS.bgColor
 				//MARK: COLOR SELECT BUTTON
 				Button {
-					selectedColor = color
-					print(selectedColor)
+//					viewModel.selectedForEditing.track.sections[index].color = allColors[index]
+					
 
 				} label: {
 					ZStack{
 
-						if color == selectedColor {
+						if selectedColor == allColors[index] {
 							Circle()
 								.foregroundColor(.white)
 								.frame(height: 25)
@@ -1811,7 +1555,7 @@ extension ABPlayerView {
 						}
 
 						Circle()
-							.foregroundColor(color)
+							.foregroundColor(allColors[index])
 							.frame(height: 30)
 							.shadow(radius: 10)
 					}
@@ -1831,6 +1575,3 @@ struct ABPlayerView_Previews: PreviewProvider {
 		
     }
 }
-
-
-
