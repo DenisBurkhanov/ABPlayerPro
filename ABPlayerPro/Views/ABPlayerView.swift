@@ -39,7 +39,7 @@ struct ABPlayerView: View {
 	@State private var scale: CGFloat = 0
 	@State private var selectedTrackNumber = 0
 	@State private var editState = false
-//	@State var sectionsForRenaming: [Section] = []
+	@State private var isKeyboardVisible = false
 	
 	@State private var volA: CGFloat = 0
 	@State private var volB: CGFloat = 0
@@ -50,7 +50,7 @@ struct ABPlayerView: View {
 	var dbNumbers: [Double] = [-30, -20, -14, -12, -10, -7, -5, -3, -2, -1, 0]
 	
 	let timer = Timer.publish(every: 0.0001, on: .main, in: .common).autoconnect()
-	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
+	
 	
 	
 	
@@ -567,13 +567,17 @@ extension ABPlayerView {
 	//MARK: SET PAGE  Structure
 	var setPage: some View {
 		VStack {
+			
 			if editState == false {
+				
+				//MARK: Header
 				HStack {
 					newTrackButton
 					tracksAssined
 				}
 				.padding(.horizontal)
-				//MARK: LIST OF ALL TRACKS
+				
+				//MARK: LIST OF ALL TRACKS or TEXT
 				if !viewModel.allTracks.isEmpty {
 					listOfTracks
 						.padding(.horizontal)
@@ -583,46 +587,36 @@ extension ABPlayerView {
 						.foregroundStyle(dCS.pastelPurpleLighter)
 					Spacer()
 				}
-			}
-			
-			
-			if viewModel.selectedForEditing.track.id != emptyTrack.id {
-				VStack {
-					if editState == true {
-						editView
-					}
-					selectedTrackTitle
-					LabelsBlock(vm: viewModel, isItABPage: false, isSelectedA: isSelectedA)
-					ZStack {
-						PositionView(vm: viewModel, engineNumber: 0)
-						
-						
-						WaveformView(samples: viewModel.selectedForEditing.track.waveform)
-							.opacity(0.4)
-						
-						
-						if !editState {
-							SectionsBlock(vm: viewModel, engineNumber: 0)
-						} else {
-							editMarkUpSections
-						}
-						
-						
-					}
-						.clipShape(RoundedRectangle(cornerRadius: 10))
-						.frame(height: 50)
-					Jog(vm: viewModel, isItABPage: false)
-						.frame(height: 50)
+				
+				if viewModel.selectedForEditing.track.id != emptyTrack.id {
 					
-					
+					basementNormalView //Polezno
+						.padding(.horizontal)
 				}
-				.padding()
-
+				
+			} else {
+		
+				trackNameTitleView
+				
+				Spacer()
+				editView
+					.padding()
+				if !isKeyboardVisible{
+					basementEditView
+						.padding(.horizontal)
+				}
+				
 				
 			}
 			
-			Spacer()
 			
+			
+		}
+		.onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+			self.isKeyboardVisible = true
+		}
+		.onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+			self.isKeyboardVisible = false
 		}
 	}
 	
@@ -801,9 +795,86 @@ extension ABPlayerView {
 		.scrollIndicators(.hidden)
 	}
 	//MARK: SELECTED TRACK TITTLE
-	var selectedTrackTitle: some View {
-		HStack {
-			Button {
+	var basementNormalView: some View {
+		VStack{
+			HStack {
+				Button {
+						if !(viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false) {
+							viewModel.selectedForEditing.audioPlayer?.play()
+						} else {
+							viewModel.selectedForEditing.audioPlayer?.pause()
+						}
+					} label: {
+						ZStack {
+							Circle()
+								.foregroundColor(dCS.pastelBlue)
+								.shadow(radius: 10)
+
+							if  viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false {
+								Image(systemName: "pause.fill")
+									.scaleEffect(1.8)
+									.foregroundColor(dCS.bgColor)
+							} else {
+								Image(systemName: "play.fill")
+									.scaleEffect(1.8)
+									.foregroundColor(dCS.bgColor)
+							}
+						}
+						.frame(height: 50)
+					}
+				
+				Spacer()
+				
+				trackNameTitleView
+				
+				Spacer()
+				
+				Button {
+					editState = true
+					haptix.sharpTap()
+				} label: {
+					ZStack {
+						Circle()
+							.foregroundColor(dCS.pastelBlue)
+							.shadow(radius: 10)
+						Text("EDIT")
+							.font(.system(size: 13))
+							.foregroundColor(dCS.bgColor)
+					}
+					.frame(height: 50)
+				}
+			}
+			
+			LabelsBlock(vm: viewModel, isItABPage: false, isSelectedA: isSelectedA)
+			ZStack {
+				PositionView(vm: viewModel, engineNumber: 0)
+				
+				
+				WaveformView(samples: viewModel.selectedForEditing.track.waveform)
+					.opacity(0.4)
+				
+				
+				if !editState {
+					SectionsBlock(vm: viewModel, engineNumber: 0)
+				} else {
+					editMarkUpSections
+				}
+				
+				
+			}
+				.clipShape(RoundedRectangle(cornerRadius: 10))
+				.frame(height: 50)
+			Jog(vm: viewModel, isItABPage: false)
+				.frame(height: 50)
+
+		}
+		
+		
+	}
+	var basementEditView: some View {
+		VStack {
+			HStack {
+				Button {
 					if !(viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false) {
 						viewModel.selectedForEditing.audioPlayer?.play()
 					} else {
@@ -814,7 +885,7 @@ extension ABPlayerView {
 						Circle()
 							.foregroundColor(dCS.pastelBlue)
 							.shadow(radius: 10)
-
+						
 						if  viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false {
 							Image(systemName: "pause.fill")
 								.scaleEffect(1.8)
@@ -827,9 +898,8 @@ extension ABPlayerView {
 					}
 					.frame(height: 50)
 				}
-			
-			Spacer()
-			if editState {
+				
+				Spacer()
 				
 				Button {
 					viewModel.copySections()
@@ -847,7 +917,7 @@ extension ABPlayerView {
 				
 				Button {
 					viewModel.pasteSections()
-//					viewModel.selectedForEditing.track.sections = sectionsForRenaming
+					
 				} label: {
 					ZStack {
 						Circle()
@@ -859,48 +929,50 @@ extension ABPlayerView {
 					}
 					.frame(height: 50)
 				}
-	
-			} else {
-				Text("\(viewModel.selectedForEditing.track.title).\(viewModel.selectedForEditing.track.format)")
-					.foregroundColor(dCS.pastelPurpleLighter)
-					.font(.title2)
-					.lineLimit(1)
-					.minimumScaleFactor(0.5)
-			}
-			
-			
-			Spacer()
-			
-			Button {
-				if editState {
-					
+				
+				Spacer()
+				
+				Button {
 					viewModel.applyChanges()
 					editState = false
-				} else {
-					editState = true
-				}
-				
-				haptix.sharpTap()
-			} label: {
-				ZStack {
-					Circle()
-						.foregroundColor(dCS.pastelBlue)
-						.shadow(radius: 10)
-					if editState == false {
-						Text("EDIT")
-							.font(.system(size: 13))
-							.foregroundColor(dCS.bgColor)
-					} else {
+					haptix.sharpTap()
+				} label: {
+					ZStack {
+						Circle()
+							.foregroundColor(dCS.pastelBlue)
+							.shadow(radius: 10)
+						
 						Text("APPLY")
 							.font(.system(size: 13))
 							.foregroundColor(dCS.bgColor)
+						
 					}
+					.frame(height: 50)
 				}
-				.frame(height: 50)
 			}
+			
+			LabelsBlock(vm: viewModel, isItABPage: false, isSelectedA: isSelectedA)
+			ZStack {
+				PositionView(vm: viewModel, engineNumber: 0)
+				
+				
+				WaveformView(samples: viewModel.selectedForEditing.track.waveform)
+					.opacity(0.4)
+				
+				
+				if !editState {
+					SectionsBlock(vm: viewModel, engineNumber: 0)
+				} else {
+					editMarkUpSections
+				}
+				
+				
+			}
+				.clipShape(RoundedRectangle(cornerRadius: 10))
+				.frame(height: 50)
+			Jog(vm: viewModel, isItABPage: false)
+				.frame(height: 50)
 		}
-		
-		
 	}
 	//MARK: MarkUp View
 	var editMarkUpSections: some View {
@@ -944,93 +1016,23 @@ extension ABPlayerView {
 		VStack {
 
 			let track = viewModel.selectedForEditing.track
+		
 			
-
-			Text("\(track.title).\(track.format)")
-				.foregroundColor(dCS.pastelPurpleLighter)
-				.font(.title2)
-			
-			Spacer()
-			
-			
+			//MARK: LIST OF SECTIOS
 			ScrollView {
-			
+				
 				
 				ForEach(track.sections.indices, id: \.self) { index in
-					let colorEdit = false
 
-					HStack {
-						
-						Button {
-						
-						} label: {
-							HStack {
-								
-								ZStack{
-									Circle()
-										.foregroundColor(dCS.darkerGray)
-										.frame(height: 25)
-										.scaleEffect(1.5)
-									Circle()
-										.foregroundColor(track.sections[index].color)
-										.frame(height: 30)
-										.shadow(radius: 10)
-								}
-								
-							}
-						}
-						
-
-						if !colorEdit {
-							
-							
-							Text("Section")
-								.foregroundColor(dCS.pastelPurpleLighter)
-								.padding(.horizontal)
-							Spacer()
-							
-							
-							
-							Image(systemName: "play.fill")
-								.foregroundColor(.white)
-								.font(.system(size: 20))
-								.opacity(0.7)
-								.padding(.horizontal)
-								
-								.gesture(
-									DragGesture(minimumDistance: 0)
-										.onChanged({ _ in
-											haptix.sharpTap()
-											viewModel.selectedForEditing.playFrom(time: viewModel.selectedForEditing.track.sections[index].startTime)
-											viewModel.selectedForEditing.audioPlayer?.play()
-										})
-										
-										.onEnded { _ in
-											viewModel.selectedForEditing.audioPlayer?.pause()
-											
-										}
-								)
-
-							
-							
-						} else {
-							Spacer()
-							
-							colorEditingView
-
-										
-						}
-					}
-					.padding()
-					.background(.black)
-					.clipShape(RoundedRectangle(cornerRadius: 10))
+					SectionCardView(vm: viewModel, sectionIndex: index)
 				}
 				
 			}
 			.scrollIndicators(.hidden)
 			
-			HStack {
-				//MARK: ADD BUTTON
+			
+			//MARK: ADD NEW SECTION BUTTON
+			if !isKeyboardVisible {
 				Button {
 					
 					viewModel.addSection(track: track)
@@ -1065,26 +1067,105 @@ extension ABPlayerView {
 					.clipShape(RoundedRectangle(cornerRadius: 10))
 					
 				}
-				
-				
 			}
+			
 		}
 	}
+	var trackNameTitleView: some View {
+		Text("\(viewModel.selectedForEditing.track.title).\(viewModel.selectedForEditing.track.format)")
+			.foregroundColor(dCS.pastelPurpleLighter)
+			.font(.title2)
+			.lineLimit(1)
+			.minimumScaleFactor(0.5)
+	}
+
+}
+
+struct SectionCardView: View {
+	@ObservedObject var vm: ViewModel
+	@State var colorEdit = false
 	
-	var colorEditingView: some View {
+	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
+	
+	var sectionIndex: Int
+	
+	
+	var body: some View {
 		HStack {
+			Button {
+				colorEdit.toggle()
+			} label: {
+				HStack {
+					
+					ZStack{
+						Circle()
+							.foregroundColor(dCS.darkerGray)
+							.frame(height: 25)
+							.scaleEffect(1.5)
+						Circle()
+							.foregroundColor(vm.selectedForEditing.track.sections[sectionIndex].color)
+							.frame(height: 30)
+							.shadow(radius: 10)
+					}
+					
+				}
+			}
+			
+			if !colorEdit {
+				textEditView
+			} else {
+				colorEditView
+			}
+		}
+			.padding()
+			.background(.black)
+			.clipShape(RoundedRectangle(cornerRadius: 10))
+	}
+	var textEditView: some View {
+		HStack {
+			
+			TextField("Section", text: $vm.selectedForEditing.track.sections[sectionIndex].title)
+				.foregroundColor(dCS.pastelPurpleLighter)
+				.padding(.horizontal)
+			Spacer()
+			
+			Image(systemName: "play.fill")
+				.foregroundColor(.white)
+				.font(.system(size: 20))
+				.opacity(0.7)
+				.padding(.horizontal)
+			
+				.gesture(
+					DragGesture(minimumDistance: 0)
+						.onChanged({ _ in
+							vm.selectedForEditing.playFrom(time: vm.selectedForEditing.track.sections[sectionIndex].startTime)
+							vm.selectedForEditing.audioPlayer?.play()
+						})
+					
+						.onEnded { _ in
+							vm.selectedForEditing.audioPlayer?.pause()
+							
+						}
+				)
+		}
+	}
+	var colorEditView: some View {
+		HStack {
+		
+			Spacer()
 			//MARK: ALL CHOOSABLE COLORS
 			ForEach(allColors.indices, id: \.self) {  index in
-				@State var selectedColor = dCS.bgColor
+				
 				//MARK: COLOR SELECT BUTTON
 				Button {
-//					viewModel.selectedForEditing.track.sections[index].color = allColors[index]
 					
+					vm.selectedForEditing.track.sections[sectionIndex].color = allColors[index]
+					colorEdit = false
 
 				} label: {
 					ZStack{
 
-						if selectedColor == allColors[index] {
+						if allColors[index] == vm.selectedForEditing.track.sections[sectionIndex].color {
 							Circle()
 								.foregroundColor(.white)
 								.frame(height: 25)
@@ -1106,10 +1187,12 @@ extension ABPlayerView {
 				}
 			}
 		}
-		
+	}
+	init(vm: ViewModel, sectionIndex: Int) {
+		self.vm = vm
+		self.sectionIndex = sectionIndex
 	}
 }
-
 
 
 #Preview {
