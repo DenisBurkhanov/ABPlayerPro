@@ -16,8 +16,6 @@ import Waveform
 
 struct ABPlayerView: View {
 	
-	
-	
 	@ObservedObject private var viewModel = ViewModel()
 	@State var appState = 0
 	@State var haptixEngine: CHHapticEngine?
@@ -170,39 +168,48 @@ extension ABPlayerView {
 				}
 				
 				Spacer()
-				Button {
-					haptix.sharpTap()
-					isGearShown = true
-					DispatchQueue.global().async {
-						viewModel.createDataFolderIfNeeded()
-						libChecker.checkIfFilesExist()
-						DispatchQueue.main.async {
-							withAnimation {
-								isGearShown = false
-								viewModel.allTracks = libChecker.bufferForAllTRacks
-								appState = 1
-								haptix.doubleTap()
+				if !isGearShown {
+					Button {
+						haptix.sharpTap()
+						isGearShown = true
+						DispatchQueue.global().async {
+							viewModel.createDataFolderIfNeeded()
+							libChecker.checkIfFilesExist()
+							DispatchQueue.main.async {
+								withAnimation {
+									isGearShown = false
+									viewModel.allTracks = libChecker.bufferForAllTRacks
+									appState = 1
+									haptix.doubleTap()
+								}
+								
 							}
-							
 						}
-					}
-					
-					
-				} label: {
-					ZStack{
 						
-						Text("Analize tracks in your library")
-							.foregroundColor(dCS.pastelPurpleLighter)
-							.padding()
-							.padding(.horizontal)
-							.background(dCS.darkerGray)
-							.clipShape(RoundedRectangle(cornerRadius: 10))
-							.opacity(0.8)
-					}
-					.shadow(radius: 10)
 						
+					} label: {
+						ZStack{
+							
+							Text("Analize tracks in your library")
+								.foregroundColor(dCS.pastelPurpleLighter)
+								.padding()
+								.padding(.horizontal)
+								.background(dCS.darkerGray)
+								.clipShape(RoundedRectangle(cornerRadius: 10))
+								.opacity(0.8)
+						}
+						.shadow(radius: 10)
+						
+					}
+				} else {
+					Text("Analizing...")
+						.foregroundColor(dCS.pastelPurpleLighter)
+						.padding()
+						.padding(.horizontal)
+//						.background(dCS.darkerGray)
+//						.clipShape(RoundedRectangle(cornerRadius: 10))
+						.opacity(0.8)
 				}
-				
 				Spacer()
 				Spacer()
 			}
@@ -776,7 +783,7 @@ extension ABPlayerView {
 		}
 		.scrollIndicators(.hidden)
 	}
-	//MARK: SELECTED TRACK TITTLE
+	//MARK: Basement Normal
 	var basementNormalView: some View {
 		VStack{
 			HStack {
@@ -841,18 +848,14 @@ extension ABPlayerView {
 				} else {
 					editMarkUpSections
 				}
-				
-				
 			}
 				.clipShape(RoundedRectangle(cornerRadius: 10))
 				.frame(height: 50)
 			Jog(vm: viewModel, isItABPage: false)
 				.frame(height: 50)
-
 		}
-		
-		
 	}
+	//MARK: Basemrnt Edit
 	var basementEditView: some View {
 		VStack {
 			HStack {
@@ -1053,6 +1056,7 @@ extension ABPlayerView {
 			
 		}
 	}
+	//MARK: SELECTED TRACK TITLE
 	var trackNameTitleView: some View {
 		Text("\(viewModel.selectedForEditing.track.title).\(viewModel.selectedForEditing.track.format)")
 			.foregroundColor(dCS.pastelPurpleLighter)
