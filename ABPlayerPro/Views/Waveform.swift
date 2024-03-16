@@ -24,7 +24,7 @@ class WaveformModel: ObservableObject {
 	}
 }
 
-struct Wav: View {
+struct WaveformView: View {
 	var samples: SampleBuffer
 	var body: some View {
 		GeometryReader { geo in

@@ -8,6 +8,17 @@
 import SwiftUI
 
 struct sectionView: View {
+	@ObservedObject var vm: ViewModel
+	var engineNumber: Int
+	var engine: AudioEngine {
+		switch engineNumber {
+		case 1:  return vm.audioEngineA
+		case 2:  return vm.audioEngineB
+		default: return vm.selectedForEditing
+		}
+		
+	}
+	
 	var section: Section
 	
 	var body: some View {
@@ -17,9 +28,15 @@ struct sectionView: View {
 			if section.loop {
 				Rectangle()
 				.foregroundColor(section.color)
-				.opacity(0.8)
+				.opacity(0.85)
 					.shadow(radius: 5)
 					.ignoresSafeArea()
+					.overlay {
+						RoundedRectangle(cornerRadius: 2)
+							
+							.stroke(lineWidth: 2)
+							.foregroundColor(.white)
+					}
 			} else {
 				Rectangle()
 					.foregroundColor(section.color)
@@ -35,11 +52,10 @@ struct sectionView: View {
 					if section.loop {
 
 						Image(systemName: "arrow.triangle.2.circlepath.circle.fill")
-							.resizable()
-							.padding(8)
-							.scaledToFit()
+
 							.foregroundColor(.white)
 							.opacity(0.7)
+							
 					}
 				}
 				
@@ -50,8 +66,9 @@ struct sectionView: View {
 		.ignoresSafeArea()
 	}
 	
-	init(section: Section) {
+	init(vm: ViewModel, engineNumber: Int, section: Section) {
+		self.vm = vm
+		self.engineNumber = engineNumber
 		self.section = section
 	}
-	
 }

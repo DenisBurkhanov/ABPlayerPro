@@ -18,6 +18,10 @@ struct SectionsBlock: View {
 		}
 		
 	}
+	
+		
+		
+	
 	var ab: Bool {
 		if engineNumber > 0 {
 			return true
@@ -27,40 +31,42 @@ struct SectionsBlock: View {
 	}
 	var body: some View {
 		GeometryReader { geometry in
+			let sections = engine.track.sections
 			let padding: CGFloat = 0.0000001
 			let blockWidth = (geometry.size.width)
 			let duration = (engine.duration)
 			
-			ZStack {
-
-
-
-
-				HStack(spacing: 0) {
-					let track = engine.track
-
+			
+			HStack(spacing: 0) {
+				if !sections.isEmpty {
 					
-						ForEach(track.sections.sorted(by: { $0.startTime < $1.startTime } )) { section in
-							let sectionStart = section.startTime
-							let sectionEnd = ((blockWidth / (duration - padding) ) * (section.endTime - sectionStart ))
-//							let sectionDuration = sectionEnd - sectionStart
+					ForEach(Array(sections.enumerated()), id: \.offset) { index, value in
 
+						let sectionStart = engine.track.sections[index].startTime
+						let sectionEnd = ((blockWidth / (duration - padding) ) * (engine.track.sections[index].endTime - sectionStart ))
 
-
-							sectionView(section: section)
-								.frame(width: (sectionEnd >= 0 ? sectionEnd : 0 ))
-
-								.onTapGesture {
-									vm.playFrom(time: section.startTime, ab: ab)
+						sectionView(vm: vm, engineNumber: engineNumber, section: engine.track.sections[index])
+							.frame(width: (sectionEnd >= 0 ? sectionEnd : 0 ))
+						
+							.onTapGesture {
+								vm.playFrom(time: engine.track.sections[index].startTime, ab: ab)
 //									haptixEngine.dullTap()
-								}
-							
-								
-							
-								
-						}
+							}
+//							.onLongPressGesture {
+//								for (index, value) in engine.track.sections.enumerated() {
+//									if engine.track.sections[index].loop {
+//										engine.track.sections[index].loop = false
+//									} else {
+//										engine.track.sections[index].loop = true
+//									}
+//									
+//								}
+//								
+//							}
+					}
 				}
 			}
+			
 			.frame(width: blockWidth)
 			.clipShape(RoundedRectangle(cornerRadius: 10))
 		}

@@ -216,7 +216,7 @@ extension ABPlayerView {
 	//MARK: A/B PAGE Structure
 	var abPage: some View {
 		VStack {
-			let track = isSelectedA ? viewModel.audioEngineA.track : viewModel.audioEngineB.track
+
 			
 			MeterBridge(vm: viewModel, engineNumber: isSelectedA ? 1 : 2)
 				.frame(height: 24)
@@ -237,13 +237,17 @@ extension ABPlayerView {
 				
 				PositionView(vm: viewModel, engineNumber: isSelectedA ? 1 : 2)
 				
-				if track.id != emptyTrack.id {
+				
 					ZStack {
-						Wav(samples: viewModel.audioEngineA.track.waveform)
-							.opacity(isSelectedA ? 0.7 : 0.0)
-						Wav(samples: viewModel.audioEngineB.track.waveform)
-							.opacity(isSelectedA ? 0.0 : 0.7)
-					}
+						if viewModel.audioEngineA.track.id != emptyTrack.id {
+							WaveformView(samples: viewModel.audioEngineA.track.waveform)
+								.opacity(isSelectedA ? 0.7 : 0.0)
+						}
+						
+						if viewModel.audioEngineB.track.id != emptyTrack.id {
+							WaveformView(samples: viewModel.audioEngineB.track.waveform)
+								.opacity(isSelectedA ? 0.0 : 0.7)
+						}
 					
 				}
 					
@@ -480,7 +484,7 @@ extension ABPlayerView {
 								.foregroundColor(loudnessAnalyzingStatus ? dCS.pastelRed : dCS.bgColor)
 								.shadow(radius: 10)
 						}
-						.frame(height: 75)
+						.frame(height: 65)
 					}
 					if isCompensationAvailable {
 						Button {
@@ -519,7 +523,7 @@ extension ABPlayerView {
 									.foregroundColor(viewModel.normalized ? dCS.bgColor : dCS.lighterGray)
 									.shadow(radius: 10)
 							}
-							.frame(height: 75)
+							.frame(height: 65)
 						}
 					}
 					
@@ -593,7 +597,7 @@ extension ABPlayerView {
 						PositionView(vm: viewModel, engineNumber: 0)
 						
 						
-						Wav(samples: viewModel.selectedForEditing.track.waveform)
+						WaveformView(samples: viewModel.selectedForEditing.track.waveform)
 							.opacity(0.4)
 						
 						

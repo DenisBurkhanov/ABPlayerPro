@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1300263D2B75445C00662213 /* WaveFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1300263C2B75445C00662213 /* WaveFormView.swift */; };
 		132E614D2B6B9657002777B9 /* silentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132E614C2B6B9657002777B9 /* silentMode.swift */; };
 		134695582B6EC0220089DD5D /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134695572B6EC0220089DD5D /* Logo.swift */; };
 		134912742BA4AD9D003E3CA2 /* PositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134912732BA4AD9D003E3CA2 /* PositionView.swift */; };
@@ -18,7 +17,7 @@
 		1349ADC62B6F465900C1F680 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1349ADC52B6F465900C1F680 /* Assets.xcassets */; };
 		134F35EF2B6CE4FE004139D2 /* Haptix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134F35EE2B6CE4FE004139D2 /* Haptix.swift */; };
 		13706CB72B7F00F6000A1694 /* EditSectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13706CB62B7F00F6000A1694 /* EditSectionsView.swift */; };
-		1380DE082BA079E90098B80D /* WaveformUsingWaveform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1380DE072BA079E90098B80D /* WaveformUsingWaveform.swift */; };
+		1380DE082BA079E90098B80D /* Waveform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1380DE072BA079E90098B80D /* Waveform.swift */; };
 		1383F2102B7C7CB6007D8C09 /* Waveform in Frameworks */ = {isa = PBXBuildFile; productRef = 1383F20F2B7C7CB6007D8C09 /* Waveform */; };
 		13B048C82B6EA1480072FCD5 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B048C72B6EA1480072FCD5 /* SectionView.swift */; };
 		13B604C42B0A4008000D8184 /* ABPlayerProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B604C32B0A4008000D8184 /* ABPlayerProApp.swift */; };
@@ -33,7 +32,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1300263C2B75445C00662213 /* WaveFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveFormView.swift; sourceTree = "<group>"; };
 		132E614C2B6B9657002777B9 /* silentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = silentMode.swift; sourceTree = "<group>"; };
 		134695572B6EC0220089DD5D /* Logo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
 		134912732BA4AD9D003E3CA2 /* PositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionView.swift; sourceTree = "<group>"; };
@@ -44,7 +42,7 @@
 		1349ADC52B6F465900C1F680 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Downloads/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
 		134F35EE2B6CE4FE004139D2 /* Haptix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptix.swift; sourceTree = "<group>"; };
 		13706CB62B7F00F6000A1694 /* EditSectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSectionsView.swift; sourceTree = "<group>"; };
-		1380DE072BA079E90098B80D /* WaveformUsingWaveform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformUsingWaveform.swift; sourceTree = "<group>"; };
+		1380DE072BA079E90098B80D /* Waveform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waveform.swift; sourceTree = "<group>"; };
 		139F07482B0D99A70061FDC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		13B048C72B6EA1480072FCD5 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
 		13B604C02B0A4008000D8184 /* ABPlayerPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ABPlayerPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,10 +87,9 @@
 				1349127B2BA4D23B003E3CA2 /* MeterBridge.swift */,
 				134912792BA4CAF9003E3CA2 /* JogBlock.swift */,
 				134912752BA4B480003E3CA2 /* SectionsBlock.swift */,
-				1380DE072BA079E90098B80D /* WaveformUsingWaveform.swift */,
+				1380DE072BA079E90098B80D /* Waveform.swift */,
 				13706CB62B7F00F6000A1694 /* EditSectionsView.swift */,
 				13B048C72B6EA1480072FCD5 /* SectionView.swift */,
-				1300263C2B75445C00662213 /* WaveFormView.swift */,
 				134695572B6EC0220089DD5D /* Logo.swift */,
 			);
 			path = Views;
@@ -239,7 +236,6 @@
 				1349127C2BA4D23B003E3CA2 /* MeterBridge.swift in Sources */,
 				13B604C62B0A4008000D8184 /* ABPlayerView.swift in Sources */,
 				13B604D22B0A419B000D8184 /* Colors.swift in Sources */,
-				1300263D2B75445C00662213 /* WaveFormView.swift in Sources */,
 				132E614D2B6B9657002777B9 /* silentMode.swift in Sources */,
 				134912742BA4AD9D003E3CA2 /* PositionView.swift in Sources */,
 				134695582B6EC0220089DD5D /* Logo.swift in Sources */,
@@ -247,7 +243,7 @@
 				13B048C82B6EA1480072FCD5 /* SectionView.swift in Sources */,
 				134F35EF2B6CE4FE004139D2 /* Haptix.swift in Sources */,
 				13706CB72B7F00F6000A1694 /* EditSectionsView.swift in Sources */,
-				1380DE082BA079E90098B80D /* WaveformUsingWaveform.swift in Sources */,
+				1380DE082BA079E90098B80D /* Waveform.swift in Sources */,
 				13B604C42B0A4008000D8184 /* ABPlayerProApp.swift in Sources */,
 				1349127A2BA4CAF9003E3CA2 /* JogBlock.swift in Sources */,
 				13B604D62B0B880C000D8184 /* Song.swift in Sources */,

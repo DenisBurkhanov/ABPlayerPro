@@ -32,7 +32,7 @@ struct MeterBridge: View {
 			let correlation   = (leftChannel - rightChannel)
 			
 			let meterColor    = dCS.pastelBlue
-			let bgOpacity: CGFloat = 0.5
+			let meterBGOpacity: CGFloat = 0.5
 			
 			
 			
@@ -62,7 +62,7 @@ struct MeterBridge: View {
 					Rectangle()
 						.frame(width: elementWidth, height: elementHeight)
 						.foregroundColor(dCS.darkerGray)
-						.opacity(bgOpacity)
+						.opacity(meterBGOpacity)
 						.overlay(
 							ZStack {
 								//MARK: Marks
@@ -118,7 +118,7 @@ struct MeterBridge: View {
 					Rectangle()
 						.frame(width: elementWidth, height: elementHeight)
 						.foregroundColor(dCS.darkerGray)
-						.opacity(bgOpacity)
+						.opacity(meterBGOpacity)
 						.overlay(
 							ZStack {
 								//MARK: Marks
@@ -172,7 +172,7 @@ struct MeterBridge: View {
 					Rectangle()
 						.frame(width: elementWidth, height: elementHeight)
 						.foregroundColor(dCS.darkerGray)
-						.opacity(bgOpacity)
+						.opacity(meterBGOpacity)
 						.overlay(
 							HStack {
 								ZStack {
