@@ -15,6 +15,7 @@
 		1349127A2BA4CAF9003E3CA2 /* JogBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134912792BA4CAF9003E3CA2 /* JogBlock.swift */; };
 		1349127C2BA4D23B003E3CA2 /* MeterBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1349127B2BA4D23B003E3CA2 /* MeterBridge.swift */; };
 		1349ADC62B6F465900C1F680 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1349ADC52B6F465900C1F680 /* Assets.xcassets */; };
+		134A533E2BA5BECE00422B29 /* SectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134A533D2BA5BECE00422B29 /* SectionCardView.swift */; };
 		134F35EF2B6CE4FE004139D2 /* Haptix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134F35EE2B6CE4FE004139D2 /* Haptix.swift */; };
 		13706CB72B7F00F6000A1694 /* EditSectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13706CB62B7F00F6000A1694 /* EditSectionsView.swift */; };
 		1380DE082BA079E90098B80D /* Waveform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1380DE072BA079E90098B80D /* Waveform.swift */; };
@@ -40,6 +41,7 @@
 		134912792BA4CAF9003E3CA2 /* JogBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JogBlock.swift; sourceTree = "<group>"; };
 		1349127B2BA4D23B003E3CA2 /* MeterBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterBridge.swift; sourceTree = "<group>"; };
 		1349ADC52B6F465900C1F680 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Downloads/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
+		134A533D2BA5BECE00422B29 /* SectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCardView.swift; sourceTree = "<group>"; };
 		134F35EE2B6CE4FE004139D2 /* Haptix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptix.swift; sourceTree = "<group>"; };
 		13706CB62B7F00F6000A1694 /* EditSectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSectionsView.swift; sourceTree = "<group>"; };
 		1380DE072BA079E90098B80D /* Waveform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waveform.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				134912732BA4AD9D003E3CA2 /* PositionView.swift */,
 				134912772BA4BEDE003E3CA2 /* LabelsBlock.swift */,
 				1349127B2BA4D23B003E3CA2 /* MeterBridge.swift */,
+				134A533D2BA5BECE00422B29 /* SectionCardView.swift */,
 				134912792BA4CAF9003E3CA2 /* JogBlock.swift */,
 				134912752BA4B480003E3CA2 /* SectionsBlock.swift */,
 				1380DE072BA079E90098B80D /* Waveform.swift */,
@@ -249,6 +252,7 @@
 				13B604D62B0B880C000D8184 /* Song.swift in Sources */,
 				134912782BA4BEDE003E3CA2 /* LabelsBlock.swift in Sources */,
 				13EFA4EE2BA0F4B400D49D59 /* LibChecker.swift in Sources */,
+				134A533E2BA5BECE00422B29 /* SectionCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
