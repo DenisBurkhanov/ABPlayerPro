@@ -148,7 +148,9 @@ class AudioEngine: ObservableObject {
 	func scrub(offsetTime: TimeInterval) {
 		audioPlayer?.currentTime = audioPlayer!.currentTime + ( offsetTime / scrubScaleFactor)
 	}
-	
+	func removeSection(number: Int) {
+		self.track.sections.remove(at: number)
+	}
 	
 	
 	func setupAudioPlayer() {

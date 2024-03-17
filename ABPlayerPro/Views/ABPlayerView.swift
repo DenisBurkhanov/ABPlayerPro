@@ -11,15 +11,11 @@ import CoreHaptics
 import Waveform
 
 
-
-
-
 struct ABPlayerView: View {
 	
 	@ObservedObject private var viewModel = ViewModel()
 	@State var appState = 0
-	@State var haptixEngine: CHHapticEngine?
-	@State var haptix = Haptix()
+
 	
 	@State private var isShowingDocumentPicker = false
 	@State private var showAlert = false
@@ -77,7 +73,7 @@ struct ABPlayerView: View {
 			
 
 			configureAudioSession()
-			haptix.prepareHaptix()
+//			Haptix.shared.prepareHaptix()
 		}
 		.onReceive(timer) { _ in
 			if isGearShown {
@@ -98,7 +94,7 @@ struct ABPlayerView: View {
 					loudnessTimer = 0
 					viewModel.audioEngineA.calcResultAvgBuffer()
 					viewModel.audioEngineB.calcResultAvgBuffer()
-					haptix.sharpTap()
+					Haptix.shared.sharpTap()
 					isCompensationAvailable = true
 					
 					
@@ -170,7 +166,7 @@ extension ABPlayerView {
 				Spacer()
 				if !isGearShown {
 					Button {
-						haptix.sharpTap()
+						Haptix.shared.doubleTap()
 						isGearShown = true
 						DispatchQueue.global().async {
 							viewModel.createDataFolderIfNeeded()
@@ -180,7 +176,7 @@ extension ABPlayerView {
 									isGearShown = false
 									viewModel.allTracks = libChecker.bufferForAllTRacks
 									appState = 1
-									haptix.doubleTap()
+									Haptix.shared.doubleTap()
 								}
 								
 							}
@@ -274,9 +270,6 @@ extension ABPlayerView {
 				.padding(.horizontal)
 		}
 	}
-	
-	
-	
 	//MARK: TRACK PICKER
 	var tracksAssined: some View {
 		Button {
@@ -284,14 +277,14 @@ extension ABPlayerView {
 				withAnimation(.smooth) {
 					appState = 2
 //					prepareHaptix()
-					haptix.doubleTap()
+					Haptix.shared.doubleTap()
 				}
 				
 			} else if appState == 2 {
 				withAnimation(.snappy) {
 					appState = 1
 //					prepareHaptix()
-					haptix.doubleTap()
+					Haptix.shared.doubleTap()
 				}
 				
 				viewModel.audioEngineA.audioPlayer?.stop()
@@ -434,7 +427,7 @@ extension ABPlayerView {
 					viewModel.pauseSong()
 				}
 				
-				haptix.sharpTap()
+				Haptix.shared.sharpTap()
 			} label: {
 				ZStack {
 					Circle()
@@ -474,7 +467,7 @@ extension ABPlayerView {
 					Button {
 						if !loudnessAnalyzingStatus {
 							loudnessAnalyzingStatus = true
-							haptix.sharpTap()
+							Haptix.shared.sharpTap()
 						}
 						
 	
@@ -514,7 +507,7 @@ extension ABPlayerView {
 								
 							}
 							
-							haptix.doubleTap()
+							Haptix.shared.doubleTap()
 						} label: {
 							ZStack {
 								Circle()
@@ -614,7 +607,8 @@ extension ABPlayerView {
 	var newTrackButton: some View {
 
 		Button {
-	
+			Haptix.shared.doubleTap()
+			
 			isShowingDocumentPicker = true
 		} label: {
 			Image(systemName: "plus")
@@ -671,7 +665,7 @@ extension ABPlayerView {
 						Button {
 							viewModel.switchTrackA(track: track)
 							viewModel.audioEngineA.setupAudioPlayer()
-							haptix.sharpTap()
+							Haptix.shared.sharpTap()
 							
 							if isSelectedA {
 								viewModel.audioEngineB.audioPlayer?.volume = 0
@@ -720,11 +714,11 @@ extension ABPlayerView {
 //									sectionsForRenaming = viewModel.selectedForEditing.track.sections
 									viewModel.selectedForEditing.setupAudioPlayer()
 									viewModel.selectedForEditing.audioPlayer?.volume = 1
-									haptix.sharpTap()
+									Haptix.shared.sharpTap()
 								}
 								.onLongPressGesture(minimumDuration: 0.5) {
 									showAlert = true
-									haptix.doubleTap()
+									Haptix.shared.doubleTap()
 									
 								}
 							
@@ -752,7 +746,7 @@ extension ABPlayerView {
 						Button {
 							viewModel.switchTrackB(track: track)
 							viewModel.audioEngineB.setupAudioPlayer()
-							haptix.sharpTap()
+							Haptix.shared.sharpTap()
 							
 							if isSelectedA {
 								viewModel.audioEngineB.audioPlayer?.volume = 0
@@ -772,7 +766,7 @@ extension ABPlayerView {
 				.alert("Delete track?",isPresented: $showAlert) {
 					Button(role: .destructive) {
 						viewModel.deleteTrack(track: track)
-						haptix.sharpTap()
+						Haptix.shared.sharpTap()
 						
 					} label: {
 						Text("Delete")
@@ -782,6 +776,73 @@ extension ABPlayerView {
 			}
 		}
 		.scrollIndicators(.hidden)
+	}
+	//MARK: SELECTED TRACK EDITOR
+	var editView: some View {
+		VStack {
+
+			@State var track = viewModel.selectedForEditing.track
+			@StateObject var engine = viewModel.selectedForEditing
+			
+			//MARK: LIST OF SECTIOS
+			ScrollView {
+				
+				
+				ForEach(viewModel.selectedForEditing.track.sections.indices, id: \.self) { index in
+					SectionCardView(
+						engine: $viewModel.selectedForEditing,
+						selectedColor: $viewModel.selectedForEditing.track.sections[index].color,
+						selectedText: $viewModel.selectedForEditing.track.sections[index].title,
+						sectionStartTime: $viewModel.selectedForEditing.track.sections[index].startTime,
+						sectionIndex: .constant(index)
+					) { someIndex in
+						viewModel.removeSection(number: someIndex)
+					}
+				}
+				
+			}
+			.scrollIndicators(.hidden)
+			
+			
+			//MARK: ADD NEW SECTION BUTTON
+			if !isKeyboardVisible {
+				Button {
+					
+					viewModel.addSection(track: track)
+					viewModel.selectedForEditing.track.fillMarkUpSections()
+					Haptix.shared.sharpTap()
+				} label: {
+					HStack {
+						ZStack{
+							Circle()
+								.foregroundColor(dCS.darkerGray)
+								.frame(height: 25)
+								.scaleEffect(1.5)
+							Circle()
+								.foregroundColor(dCS.lighterGray)
+								.frame(height: 30)
+								.shadow(radius: 10)
+							Image(systemName: "plus")
+								.foregroundColor(.white)
+								.fontWeight(.bold)
+								.scaleEffect(1.3)
+								.opacity(0.7)
+						}
+						
+						Text("ADD SECTION")
+							.foregroundColor(dCS.pastelPurpleLighter)
+							.padding(.horizontal)
+						Spacer()
+						
+					}
+					.padding()
+					.background(.black)
+					.clipShape(RoundedRectangle(cornerRadius: 10))
+					
+				}
+			}
+			
+		}
 	}
 	//MARK: Basement Normal
 	var basementNormalView: some View {
@@ -820,7 +881,7 @@ extension ABPlayerView {
 				
 				Button {
 					editState = true
-					haptix.sharpTap()
+					Haptix.shared.sharpTap()
 				} label: {
 					ZStack {
 						Circle()
@@ -920,7 +981,7 @@ extension ABPlayerView {
 				Button {
 					viewModel.applyChanges()
 					editState = false
-					haptix.sharpTap()
+					Haptix.shared.sharpTap()
 				} label: {
 					ZStack {
 						Circle()
@@ -996,66 +1057,6 @@ extension ABPlayerView {
 			.clipShape(RoundedRectangle(cornerRadius: 10))
 		}
 	}
-	//MARK: SELECTED TRACK EDITOR
-	var editView: some View {
-		VStack {
-
-			let track = viewModel.selectedForEditing.track
-		
-			
-			//MARK: LIST OF SECTIOS
-			ScrollView {
-				
-				
-				ForEach(track.sections.indices, id: \.self) { index in
-
-					SectionCardView(vm: viewModel, sectionIndex: index)
-				}
-				
-			}
-			.scrollIndicators(.hidden)
-			
-			
-			//MARK: ADD NEW SECTION BUTTON
-			if !isKeyboardVisible {
-				Button {
-					
-					viewModel.addSection(track: track)
-					viewModel.selectedForEditing.track.fillMarkUpSections()
-					haptix.sharpTap()
-				} label: {
-					HStack {
-						ZStack{
-							Circle()
-								.foregroundColor(dCS.darkerGray)
-								.frame(height: 25)
-								.scaleEffect(1.5)
-							Circle()
-								.foregroundColor(dCS.lighterGray)
-								.frame(height: 30)
-								.shadow(radius: 10)
-							Image(systemName: "plus")
-								.foregroundColor(.white)
-								.fontWeight(.bold)
-								.scaleEffect(1.3)
-								.opacity(0.7)
-						}
-						
-						Text("ADD SECTION")
-							.foregroundColor(dCS.pastelPurpleLighter)
-							.padding(.horizontal)
-						Spacer()
-						
-					}
-					.padding()
-					.background(.black)
-					.clipShape(RoundedRectangle(cornerRadius: 10))
-					
-				}
-			}
-			
-		}
-	}
 	//MARK: SELECTED TRACK TITLE
 	var trackNameTitleView: some View {
 		Text("\(viewModel.selectedForEditing.track.title).\(viewModel.selectedForEditing.track.format)")
@@ -1066,8 +1067,13 @@ extension ABPlayerView {
 	}
 
 }
-
-
+// X+Y = 10
+// X+Z = 20
+// Y+Z = 24
+// Y=X+4
+// Z=2X+4
+// S = (X+Y+Z)
+//Find S
 
 
 #Preview {

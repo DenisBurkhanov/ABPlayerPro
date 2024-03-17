@@ -122,7 +122,7 @@ class ViewModel: ObservableObject {
 		selectedForEditing.track.sections.append(Section(title: "Section", startTime: selectedForEditing.playbackPosition,endTime: selectedForEditing.duration, color: allColors.randomElement() ?? dCS.bgColor))
 	}
 	func removeSection(number: Int) {
-		selectedForEditing.track.sections.remove(at: number)
+		selectedForEditing.removeSection(number: number)
 	}
 
 	

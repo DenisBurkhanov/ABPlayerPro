@@ -8,19 +8,27 @@
 import SwiftUI
 
 struct SectionCardView: View {
-	@ObservedObject var vm: ViewModel
+//	@ObservedObject var vm: ViewModel
 	@State var colorEdit = false
 	@State var isDeleteButtonShown: Bool = false
 	@State var slideValue: CGFloat = 0
 	
-	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
+	@Binding var engine: AudioEngine
+	@Binding var selectedColor: Color
+	@Binding var selectedText: String
+	@Binding var sectionStartTime: TimeInterval
+	@Binding var sectionIndex: Int
+	var removeSection: (Int) -> ()
 	
-	var sectionIndex: Int
+	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed ]
+	
+
 	
 	
 	var body: some View {
 		HStack {
 			Button {
+				Haptix.shared.sharpTap()
 				colorEdit.toggle()
 			} label: {
 				HStack {
@@ -31,7 +39,7 @@ struct SectionCardView: View {
 							.frame(height: 25)
 							.scaleEffect(1.5)
 						Circle()
-							.foregroundColor(vm.selectedForEditing.track.sections[sectionIndex].color)
+							.foregroundColor(selectedColor)
 							.frame(height: 30)
 							.shadow(radius: 10)
 					}
@@ -53,7 +61,7 @@ struct SectionCardView: View {
 	var textEditView: some View {
 		HStack {
 			
-			TextField("Section", text: $vm.selectedForEditing.track.sections[sectionIndex].title)
+			TextField("Section", text: $selectedText)
 				.foregroundColor(dCS.pastelPurpleLighter)
 				.padding(.horizontal)
 			Spacer()
@@ -89,19 +97,19 @@ struct SectionCardView: View {
 						.offset(x: slideValue)
 						.gesture(
 							DragGesture(minimumDistance: 0)
-								.onChanged({ _ in
-									vm.selectedForEditing.playFrom(time: vm.selectedForEditing.track.sections[sectionIndex].startTime)
-									vm.selectedForEditing.audioPlayer?.play()
-								})
+								.onChanged{ _ in
+									engine.playFrom(time: sectionStartTime)
+									engine.audioPlayer?.play()
+								}
 							
 								.onEnded { _ in
-									vm.selectedForEditing.audioPlayer?.pause()
+									engine.audioPlayer?.pause()
 									
 								}
 						)
 				} else {
 					Button {
-						vm.removeSection(number: sectionIndex)
+						removeSection(sectionIndex)
 					} label: {
 						ZStack {
 							Circle()
@@ -130,13 +138,13 @@ struct SectionCardView: View {
 				//MARK: COLOR SELECT BUTTON
 				Button {
 					
-					vm.selectedForEditing.track.sections[sectionIndex].color = allColors[index]
+					selectedColor = allColors[index]
 					colorEdit = false
 
 				} label: {
 					ZStack{
 
-						if allColors[index] == vm.selectedForEditing.track.sections[sectionIndex].color {
+						if allColors[index] == selectedColor {
 							Circle()
 								.foregroundColor(.white)
 								.frame(height: 25)
@@ -158,9 +166,5 @@ struct SectionCardView: View {
 				}
 			}
 		}
-	}
-	init(vm: ViewModel, sectionIndex: Int) {
-		self.vm = vm
-		self.sectionIndex = sectionIndex
 	}
 }

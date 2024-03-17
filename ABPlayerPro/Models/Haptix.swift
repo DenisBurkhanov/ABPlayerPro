@@ -10,7 +10,9 @@ import SwiftUI
 import CoreHaptics
 
 final class Haptix {
-	@State var haptixEngine: CHHapticEngine?
+	static let shared = Haptix()
+
+	var haptixEngine: CHHapticEngine?
 	func prepareHaptix() {
 		guard CHHapticEngine.capabilitiesForHardware().supportsHaptics
 		else { return }
@@ -23,6 +25,7 @@ final class Haptix {
 		}
 			
 	}
+
 	func sharpTap() {
 		prepareHaptix()
 		guard CHHapticEngine.capabilitiesForHardware().supportsHaptics
@@ -42,6 +45,7 @@ final class Haptix {
 			print("Failed to play pattern \(error.localizedDescription)")
 		}
 	}
+
 	func dullTap() {
 		prepareHaptix()
 		guard CHHapticEngine.capabilitiesForHardware().supportsHaptics
@@ -61,6 +65,7 @@ final class Haptix {
 			print("Failed to play pattern \(error.localizedDescription)")
 		}
 	}
+
 	func doubleTap() {
 		prepareHaptix()
 		guard CHHapticEngine.capabilitiesForHardware().supportsHaptics
