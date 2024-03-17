@@ -22,9 +22,7 @@ struct PositionView: View {
 	
 	var body: some View {
 		GeometryReader { geometry in
-			
-			
-			
+
 			var position: TimeInterval {
 				engine.playbackPosition
 			}
@@ -36,11 +34,7 @@ struct PositionView: View {
 				LinearGradient(colors: [ Color.black, Color.white], startPoint: .leading, endPoint: .trailing)
 					.frame(width: (progressBarWidth > 0 ? progressBarWidth : 0 ))
 				Spacer()
-			}
-			
-			
-			
-			
+			}	
 		}
 	}
 	init(vm: ViewModel, engineNumber: Int) {

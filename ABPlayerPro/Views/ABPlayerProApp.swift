@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct ABPlayerProApp: App {
-	@State var haptix = Haptix()
+
     var body: some Scene {
         WindowGroup {
             ABPlayerView()

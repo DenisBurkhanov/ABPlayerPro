@@ -18,7 +18,7 @@ class ViewModel: ObservableObject {
 	
 	@Published var audioEngineA = AudioEngine()
 	@Published var audioEngineB = AudioEngine()
-	@ObservedObject var selectedForEditing = AudioEngine()
+	@Published var selectedForEditing = AudioEngine()
 
 	@Published var waveformModel = WaveformModel(url: emptyTrack.filePath)
 	

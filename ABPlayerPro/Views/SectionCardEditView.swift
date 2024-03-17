@@ -67,11 +67,12 @@ struct SectionCardView: View {
 			Spacer()
 			
 			Image(systemName: "equal")
+				.fontWeight(.ultraLight)
 				.rotationEffect(Angle(degrees: 90))
-				.font(.system(size: 20))
-				.foregroundColor(dCS.pastelPurpleLighter)
+				.font(.system(size: 25))
+				.foregroundColor(isDeleteButtonShown ? .white : dCS.pastelPurpleLighter)
 				.padding(.horizontal)
-				.padding(.horizontal)
+//				.padding(.horizontal)
 				.gesture(
 					DragGesture(minimumDistance: 0)
 						.onChanged({ gest in
@@ -90,10 +91,14 @@ struct SectionCardView: View {
 			Group{
 				if !isDeleteButtonShown {
 					Image(systemName: "play.fill")
+						
 						.foregroundColor(.white)
 						.font(.system(size: 20))
 						.opacity(0.7)
-						.padding(.horizontal)
+						.frame(height: 20)
+						.padding(10)
+						.background( dCS.lighterGray)
+						.clipShape(Circle())
 						.offset(x: slideValue)
 						.gesture(
 							DragGesture(minimumDistance: 0)
@@ -111,20 +116,26 @@ struct SectionCardView: View {
 					Button {
 						removeSection(sectionIndex)
 					} label: {
-						ZStack {
-							Circle()
-								.foregroundColor(.red)
-								.frame(height: 25)
-							Image(systemName: "xmark")
-								.foregroundColor(.white)
-								.font(.system(size: 20))
-						}
-						.padding(.horizontal)
+						
+						
+						Image(systemName: "xmark")
+							.foregroundColor(.white)
+							.font(.system(size: 20))
+							.opacity(0.7)
+							.frame(height: 20)
+							.padding(10)
+							
+							.background(.red)
+							.clipShape(Circle())
+							.padding(.leading, 20)
+//							.frame(height: 20)
+	//						.padding(.horizontal)
 					}
 					.offset(x: slideValue)
 				}
 			}
 				.clipShape(Rectangle())
+				.frame(height: 30)
 			
 		}
 	}

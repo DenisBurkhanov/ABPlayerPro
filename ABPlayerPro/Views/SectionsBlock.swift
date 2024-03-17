@@ -50,7 +50,7 @@ struct SectionsBlock: View {
 						
 							.onTapGesture {
 								vm.playFrom(time: engine.track.sections[index].startTime, ab: ab)
-//									haptixEngine.dullTap()
+								Haptix.shared.dullTap()
 							}
 //							.onLongPressGesture {
 //								for (index, value) in engine.track.sections.enumerated() {
