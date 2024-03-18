@@ -104,9 +104,9 @@
 				13B604D12B0A419B000D8184 /* Colors.swift */,
 				13EFA4ED2BA0F4B400D49D59 /* LibChecker.swift */,
 				13B604D32B0B86B6000D8184 /* AudioEngine.swift */,
-				134F35EE2B6CE4FE004139D2 /* Haptix.swift */,
-				132E614C2B6B9657002777B9 /* silentMode.swift */,
 				13B604D52B0B880C000D8184 /* Song.swift */,
+				132E614C2B6B9657002777B9 /* silentMode.swift */,
+				134F35EE2B6CE4FE004139D2 /* Haptix.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

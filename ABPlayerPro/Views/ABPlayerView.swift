@@ -781,7 +781,7 @@ extension ABPlayerView {
 	var editView: some View {
 		VStack {
 
-			@State var track = viewModel.selectedForEditing.track
+			
 			@StateObject var engine = viewModel.selectedForEditing
 			
 			//MARK: LIST OF SECTIOS
@@ -807,7 +807,7 @@ extension ABPlayerView {
 			//MARK: ADD NEW SECTION BUTTON
 			if !isKeyboardVisible {
 				Button {
-					
+					@State var track = viewModel.selectedForEditing.track
 					viewModel.addSection(track: track)
 					viewModel.selectedForEditing.track.fillMarkUpSections()
 					Haptix.shared.sharpTap()

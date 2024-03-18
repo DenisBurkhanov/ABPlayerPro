@@ -117,7 +117,7 @@ class ViewModel: ObservableObject {
 		
 		if track.sections.isEmpty && selectedForEditing.playbackPosition != 0 {
 			
-			selectedForEditing.track.sections.append(Section(title: "Section", startTime: 0, endTime: selectedForEditing.playbackPosition, color: allColors.randomElement() ?? dCS.bgColor))
+			selectedForEditing.track.sections.append(Section(title: "Section", startTime: 0, endTime: selectedForEditing.playbackPosition, color: dCS.bgColor))
 		}
 		selectedForEditing.track.sections.append(Section(title: "Section", startTime: selectedForEditing.playbackPosition,endTime: selectedForEditing.duration, color: allColors.randomElement() ?? dCS.bgColor))
 	}

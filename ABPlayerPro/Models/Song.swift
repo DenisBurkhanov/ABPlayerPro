@@ -24,6 +24,12 @@ struct AudioTrack:  Identifiable {
 
 	
 	mutating func fillMarkUpSections(){
+		if sections[0].startTime > 0 {
+			self.sections.append(Section(title: "Section", startTime: 0, endTime: TimeInterval(self.duration), color: dCS.bgColor))
+		}
+		
+		
+		
 		let sectionsSortedByStart = sections.sorted(by: { $0.startTime < $1.startTime })
 		var fixedArray: [Section] = []
 		
@@ -55,9 +61,9 @@ struct AudioTrack:  Identifiable {
 
 
 struct Section: Identifiable {
-	var title = ""
 	var id = UUID()
-	var sectionTitle = ""
+	var title = ""
+//	var sectionTitle = ""
 	var startTime: TimeInterval = 0.0
 	var endTime: TimeInterval = 0.0
 	var color = Color(#colorLiteral(red: 0.5010726452, green: 0.5060470104, blue: 0.5231509209, alpha: 1))

@@ -72,7 +72,7 @@ struct SectionCardView: View {
 				.font(.system(size: 25))
 				.foregroundColor(isDeleteButtonShown ? .white : dCS.pastelPurpleLighter)
 				.padding(.horizontal)
-//				.padding(.horizontal)
+
 				.gesture(
 					DragGesture(minimumDistance: 0)
 						.onChanged({ gest in
@@ -115,6 +115,8 @@ struct SectionCardView: View {
 				} else {
 					Button {
 						removeSection(sectionIndex)
+						isDeleteButtonShown = false
+						engine.track.fillMarkUpSections()
 					} label: {
 						
 						
@@ -128,8 +130,7 @@ struct SectionCardView: View {
 							.background(.red)
 							.clipShape(Circle())
 							.padding(.leading, 20)
-//							.frame(height: 20)
-	//						.padding(.horizontal)
+							
 					}
 					.offset(x: slideValue)
 				}
