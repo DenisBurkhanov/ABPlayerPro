@@ -14,7 +14,7 @@ Allows to mark up sections of the song and instantly switch between them
 
 ## Tecnologies:
 + Swift
-+ SwuftUI
++ SwiftUI
 + CoreHaptics
 + AVFoundation
 + Waveform
