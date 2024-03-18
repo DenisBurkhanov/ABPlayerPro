@@ -10,7 +10,6 @@ This is the app for musicians that allows critical listening on the go. It lets 
 ## Tecnologies:
 + Swift
 + SwuftUI
-+ CoreData
 + CoreHaptics
 + AVFoundation
 + Waveform
