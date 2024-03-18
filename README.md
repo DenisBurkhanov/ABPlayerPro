@@ -1,6 +1,6 @@
 # A/B player
 This is the app for musicians that allows critical listening on the go. 
-It lets you instantly switch between decks A and B, compensated for differences in volume. 
+It lets you seamlessly switch between decks A and B, compensated for differences in volume. 
 
 <div style="display:flex; justify-content:center;">
     <img src="https://github.com/DenisBurkhanov/ABPlayerPro/assets/117996642/74ad5aa7-126a-4c10-9c17-53738efc6610" alt="GIF" width="326" height="706">
