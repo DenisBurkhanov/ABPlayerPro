@@ -653,7 +653,7 @@ extension ABPlayerView {
 	var listOfTracks: some View {
 		
 		ScrollView {
-
+//			.sorted(by: {$0.title < $1.title})
 			ForEach(viewModel.allTracks) { track in
 				
 				HStack {
@@ -712,14 +712,16 @@ extension ABPlayerView {
 								.onTapGesture {
 									
 									viewModel.selectedForEditing = AudioEngine(track: track)
-//									sectionsForRenaming = viewModel.selectedForEditing.track.sections
 									viewModel.selectedForEditing.setupAudioPlayer()
 									viewModel.selectedForEditing.audioPlayer?.volume = 1
 									Haptix.shared.sharpTap()
 								}
 								.onLongPressGesture(minimumDuration: 0.5) {
-									showAlert = true
-									Haptix.shared.doubleTap()
+									if track.id == viewModel.selectedForEditing.track.id {
+										showAlert = true
+										Haptix.shared.doubleTap()
+									}
+									
 									
 								}
 							
@@ -801,9 +803,9 @@ extension ABPlayerView {
 						
 					}
 				}
-				.alert("Delete track?",isPresented: $showAlert) {
+				.alert("Delete \(viewModel.selectedForEditing.track.title).\(viewModel.selectedForEditing.track.format)?",isPresented: $showAlert) {
 					Button(role: .destructive) {
-						viewModel.deleteTrack(track: track)
+						viewModel.deleteTrack(track: viewModel.selectedForEditing.track)
 						Haptix.shared.sharpTap()
 						
 					} label: {

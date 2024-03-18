@@ -154,15 +154,19 @@ class ViewModel: ObservableObject {
 	func deleteTrack(track: AudioTrack){
 		do {
 			try FileManager.default.removeItem(at: track.filePath)
-			for (index, value) in allTracks.enumerated() {
-				if value.id == track.id {
-					allTracks.remove(at: index)
-				}
-			}
+			
 			
 			print("\(track.title) gone")
 		} catch {
 			print("Some error")
+		}
+		for (index, value) in allTracks.enumerated() {
+			if value.id == track.id {
+				allTracks.remove(at: index)
+				print("\(index) gone")
+			}
+			
+			
 		}
 	}
 	
