@@ -9,9 +9,11 @@ import SwiftUI
 import AVFoundation
 import CoreHaptics
 import Waveform
+import CoreData
 
 class ViewModel: ObservableObject {
 	
+	let container: NSPersistentContainer
 	
 
 	@Published var allTracks: [ AudioTrack ] = []
@@ -135,11 +137,11 @@ class ViewModel: ObservableObject {
 		let fileName = fileURL.lastPathComponent
 		let title = fileName.replacingOccurrences(of: ".\(fileURL.pathExtension)", with: "")
 		let format = fileURL.pathExtension
-		waveformModel = WaveformModel(url: fileURL)
-		let wave = waveformModel.samples
+//		waveformModel = WaveformModel(url: fileURL)
+//		let wave = waveformModel.samples
 		
 		
-		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format, waveform: wave)
+		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format, isWaveformRetrieved: false)
 		
 		
 		
@@ -195,8 +197,19 @@ class ViewModel: ObservableObject {
 			}
 			
 		}
-		let audioTrack = AudioTrack(filePath: track.filePath, title: track.title, format: track.format, waveform: wave)
-		allTracks.append(audioTrack)
+		let sections = selectedForEditing.track.sections
+		let newAudioTrack = AudioTrack(filePath: track.filePath, title: track.title, format: track.format, sections: sections, isWaveformRetrieved: true, waveform: wave)
+		allTracks.append(newAudioTrack)
+		
 	}
 	
+	
+	init() {
+		container = NSPersistentContainer(name: "SectionModel")
+		container.loadPersistentStores { (description, error)  in
+			if let error = error {
+				print("Error loading CoreData \(error)")
+			}
+		}
+	}
 }

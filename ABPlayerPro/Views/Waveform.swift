@@ -29,16 +29,17 @@ struct WaveformView: View {
 	var body: some View {
 		GeometryReader { geo in
 			
-			
-			Waveform(samples: samples)
-				.foregroundColor(.white)
-				.frame(width: geo.size.width, height: (geo.size.height * 2))
-			
-				.mask(
-					Rectangle()
-						.frame(height: geo.size.height)
-						.offset(x: 0, y: -(geo.size.height / 2))
-				)
+			if samples.count > 0 {
+				Waveform(samples: samples)
+					.foregroundColor(.white)
+					.frame(width: geo.size.width, height: (geo.size.height * 2))
+				
+					.mask(
+						Rectangle()
+							.frame(height: geo.size.height)
+							.offset(x: 0, y: -(geo.size.height / 2))
+					)
+			}
 		}
 		
 	}

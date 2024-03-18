@@ -21,6 +21,7 @@
 		1380DE082BA079E90098B80D /* Waveform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1380DE072BA079E90098B80D /* Waveform.swift */; };
 		1383F2102B7C7CB6007D8C09 /* Waveform in Frameworks */ = {isa = PBXBuildFile; productRef = 1383F20F2B7C7CB6007D8C09 /* Waveform */; };
 		13B048C82B6EA1480072FCD5 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B048C72B6EA1480072FCD5 /* SectionView.swift */; };
+		13B094352BA820F90015DD02 /* SectionModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 13B094332BA820F90015DD02 /* SectionModel.xcdatamodeld */; };
 		13B604C42B0A4008000D8184 /* ABPlayerProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B604C32B0A4008000D8184 /* ABPlayerProApp.swift */; };
 		13B604C62B0A4008000D8184 /* ABPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B604C52B0A4008000D8184 /* ABPlayerView.swift */; };
 		13B604CB2B0A4009000D8184 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B604CA2B0A4009000D8184 /* Preview Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		1380DE072BA079E90098B80D /* Waveform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waveform.swift; sourceTree = "<group>"; };
 		139F07482B0D99A70061FDC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		13B048C72B6EA1480072FCD5 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
+		13B094342BA820F90015DD02 /* SectionModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SectionModel.xcdatamodel; sourceTree = "<group>"; };
 		13B604C02B0A4008000D8184 /* ABPlayerPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ABPlayerPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B604C32B0A4008000D8184 /* ABPlayerProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABPlayerProApp.swift; sourceTree = "<group>"; };
 		13B604C52B0A4008000D8184 /* ABPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABPlayerView.swift; sourceTree = "<group>"; };
@@ -111,6 +113,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		13B094362BA821070015DD02 /* CoreDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				13B094332BA820F90015DD02 /* SectionModel.xcdatamodeld */,
+			);
+			path = CoreDataModel;
+			sourceTree = "<group>";
+		};
 		13B604B72B0A4008000D8184 = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +145,7 @@
 				13818EBC2BA3165D00B6D0E0 /* Views */,
 				13818EBD2BA316A400B6D0E0 /* Models */,
 				1349ADC52B6F465900C1F680 /* Assets.xcassets */,
+				13B094362BA821070015DD02 /* CoreDataModel */,
 				13B604C92B0A4009000D8184 /* Preview Content */,
 				13590A122B59B3DE0056C62C /* Tracks */,
 			);
@@ -241,6 +252,7 @@
 				13B604D22B0A419B000D8184 /* Colors.swift in Sources */,
 				132E614D2B6B9657002777B9 /* silentMode.swift in Sources */,
 				134912742BA4AD9D003E3CA2 /* PositionView.swift in Sources */,
+				13B094352BA820F90015DD02 /* SectionModel.xcdatamodeld in Sources */,
 				134695582B6EC0220089DD5D /* Logo.swift in Sources */,
 				13DB100C2BA35B2D00EDF6A9 /* ViewModel.swift in Sources */,
 				13B048C82B6EA1480072FCD5 /* SectionView.swift in Sources */,
@@ -488,6 +500,19 @@
 			productName = Waveform;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		13B094332BA820F90015DD02 /* SectionModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				13B094342BA820F90015DD02 /* SectionModel.xcdatamodel */,
+			);
+			currentVersion = 13B094342BA820F90015DD02 /* SectionModel.xcdatamodel */;
+			path = SectionModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 13B604B82B0A4008000D8184 /* Project object */;
 }

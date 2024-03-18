@@ -18,6 +18,7 @@ struct AudioTrack:  Identifiable {
 	var duration: Float = 0.0
 	var sections: [Section] = []
 	var loudnessOffset: Float = 0.0
+	var isWaveformRetrieved = false
 	var waveform: SampleBuffer = SampleBuffer(samples: [0])
 //	var waveformR: [CGFloat] = []
 	
@@ -63,7 +64,6 @@ struct AudioTrack:  Identifiable {
 struct Section: Identifiable {
 	var id = UUID()
 	var title = ""
-//	var sectionTitle = ""
 	var startTime: TimeInterval = 0.0
 	var endTime: TimeInterval = 0.0
 	var color = Color(#colorLiteral(red: 0.5010726452, green: 0.5060470104, blue: 0.5231509209, alpha: 1))

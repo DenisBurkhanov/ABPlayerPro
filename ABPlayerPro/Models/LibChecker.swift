@@ -61,11 +61,11 @@ struct LibChecker {
 		let fileName = fileURL.lastPathComponent
 		let title = fileName.replacingOccurrences(of: ".\(fileURL.pathExtension)", with: "")
 		let format = fileURL.pathExtension
-		waveformModel = WaveformModel(url: fileURL)
-		let wave = waveformModel.samples
+//		waveformModel = WaveformModel(url: fileURL)
+//		let wave = waveformModel.samples
 		
 		
-		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format, waveform: wave)
+		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format)
 		
 		self.bufferForAllTRacks.append(audioTrack)
 		

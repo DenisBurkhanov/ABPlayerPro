@@ -156,12 +156,9 @@ class AudioEngine: ObservableObject {
 	func setupAudioPlayer() {
 		let url = track.filePath
 		print("url = \(url.absoluteString)")
-//		let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//		let dataFolderURL = documentsDirectory.appendingPathComponent("ABPro").appendingPathComponent("Tracks")
+
 		if FileManager.default.fileExists(atPath: url.path) {
 		
- 
-//			let url = URL(fileURLWithPath: audioPath)
 			
 			
 			do {
@@ -189,7 +186,7 @@ class AudioEngine: ObservableObject {
 	init(){}
 }
 
-let emptyTrack = AudioTrack(filePath: Bundle.main.url(forResource: "Empty track", withExtension: "mp3")!, title: "Empty track", format: "mp3")
+let emptyTrack = AudioTrack(filePath: Bundle.main.url(forResource: "Empty track", withExtension: "mp3")!, title: "Empty track", format: "mp3", isWaveformRetrieved: false)
 
 //let mocksong: [Section] = [
 //	Section(title: "intro",   startTime: 0,     endTime: 26.6,   color: dCS.pastelPurple),

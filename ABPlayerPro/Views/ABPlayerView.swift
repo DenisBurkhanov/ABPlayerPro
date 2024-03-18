@@ -149,19 +149,8 @@ extension ABPlayerView {
 					.foregroundColor(.gray)
 					.opacity(0.5)
 				Spacer()
-				if isGearShown {
-					Image(systemName: "gear")
-						.font(.largeTitle)
-						.foregroundColor(dCS.darkerGray)
-						.rotationEffect(Angle(degrees: gearAngle))
-						.opacity(1)
-						.shadow(radius: 10)
-				} else {
-					Image(systemName: "gear")
-						.font(.largeTitle)
-						.foregroundColor(dCS.darkerGray)
-						.opacity(0)
-				}
+				
+				gearView
 				
 				Spacer()
 				if !isGearShown {
@@ -186,7 +175,7 @@ extension ABPlayerView {
 					} label: {
 						ZStack{
 							
-							Text("Analize tracks in your library")
+							Text("Lets go!")
 								.foregroundColor(dCS.pastelPurpleLighter)
 								.padding()
 								.padding(.horizontal)
@@ -208,6 +197,18 @@ extension ABPlayerView {
 				}
 				Spacer()
 				Spacer()
+			}
+		}
+	}
+	var gearView: some View {
+		Group {
+			if isGearShown {
+				Image(systemName: "gear")
+					.font(.largeTitle)
+					.foregroundColor(dCS.darkerGray)
+					.rotationEffect(Angle(degrees: gearAngle))
+					.opacity(1)
+					.shadow(radius: 10)
 			}
 		}
 	}
@@ -242,12 +243,12 @@ extension ABPlayerView {
 				
 				
 					ZStack {
-						if viewModel.audioEngineA.track.id != emptyTrack.id {
+						if viewModel.audioEngineA.track.isWaveformRetrieved {
 							WaveformView(samples: viewModel.audioEngineA.track.waveform)
 								.opacity(isSelectedA ? 0.7 : 0.0)
 						}
 						
-						if viewModel.audioEngineB.track.id != emptyTrack.id {
+						if viewModel.audioEngineB.track.isWaveformRetrieved {
 							WaveformView(samples: viewModel.audioEngineB.track.waveform)
 								.opacity(isSelectedA ? 0.0 : 0.7)
 						}
@@ -727,7 +728,44 @@ extension ABPlayerView {
 							
 							Spacer()
 							
-							
+							if track.isWaveformRetrieved {
+								Image(systemName: "waveform")
+									.foregroundColor(dCS.pastelPurpleLighter)
+									.font(.system(size: 15))
+									.padding(5)
+							} else {
+								if viewModel.selectedForEditing.track.id == track.id {
+									if !isGearShown {
+										Button {
+											isGearShown = true
+										
+											Haptix.shared.doubleTap()
+											
+											viewModel.analizeTrackWaves(track: track)
+											
+											Haptix.shared.doubleTap()
+											isGearShown = false
+											
+											
+											
+										} label: {
+											
+											Text(" ANALYZE ")
+												.foregroundColor(dCS.pastelPurpleLighter)
+												.font(.system(size: 10))
+												.padding(5)
+											
+												.background(dCS.bgColor)
+												.clipShape(RoundedRectangle(cornerRadius: 10))
+												.padding(.horizontal)
+											
+										}
+									} else {
+										gearView
+											.foregroundColor(.black)
+									}
+								}
+							}
 						}
 					}
 					
@@ -899,10 +937,10 @@ extension ABPlayerView {
 			ZStack {
 				PositionView(vm: viewModel, engineNumber: 0)
 				
-				
-				WaveformView(samples: viewModel.selectedForEditing.track.waveform)
-					.opacity(0.4)
-				
+				if viewModel.selectedForEditing.track.isWaveformRetrieved {
+					WaveformView(samples: viewModel.selectedForEditing.track.waveform)
+						.opacity(0.4)
+				}
 				
 				if !editState {
 					SectionsBlock(vm: viewModel, engineNumber: 0)
@@ -1001,11 +1039,11 @@ extension ABPlayerView {
 			ZStack {
 				PositionView(vm: viewModel, engineNumber: 0)
 				
-				
-				WaveformView(samples: viewModel.selectedForEditing.track.waveform)
-					.opacity(0.4)
-				
-				
+				if viewModel.selectedForEditing.track.isWaveformRetrieved {
+					WaveformView(samples: viewModel.selectedForEditing.track.waveform)
+						.opacity(0.4)
+					
+				}
 				if !editState {
 					SectionsBlock(vm: viewModel, engineNumber: 0)
 				} else {
@@ -1067,13 +1105,6 @@ extension ABPlayerView {
 	}
 
 }
-// X+Y = 10
-// X+Z = 20
-// Y+Z = 24
-// Y=X+4
-// Z=2X+4
-// S = (X+Y+Z)
-//Find S
 
 
 #Preview {
