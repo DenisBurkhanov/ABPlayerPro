@@ -98,18 +98,21 @@ final class StorageManager {
 	
 	func deEntitization(of entitiesArray: [SectionEntity]){
 	
-			for entity in entitiesArray {
-				let id = entity.id ?? UUID()
-				//				let trackTitle = entity.trackTitle
-				let title = entity.title ?? ""
-				let startTime = entity.startTime
-				let endTime = entity.endTime
-//				let color: UIColor = UIColor.
-				//				let colorRed = entity.colorRed
-				//				let colorGreen = entity.colorGreen
-				//				let colorBlue = entity.colorBlue
-				//				let colorAlpha = entity.colorAlpha
-				let newSection = Section(id: id, title: title, startTime: startTime, endTime: endTime, color: allColors.randomElement() ?? dCS.bgColor)
+		for entity in entitiesArray {
+			let id = entity.id ?? UUID()
+			//				let trackTitle = entity.trackTitle
+			let title = entity.title ?? ""
+			let startTime = entity.startTime
+			let endTime = entity.endTime
+			
+			//
+			let colorRed = entity.colorRed
+			let colorGreen = entity.colorGreen
+			let colorBlue = entity.colorBlue
+			let colorAlpha = entity.colorAlpha
+			let color = Color(red: colorRed, green: colorGreen, blue: colorBlue, opacity: colorAlpha)
+			
+			let newSection = Section(id: id, title: title, startTime: startTime, endTime: endTime, color: color)
 				savedSectionsDeEntitisized.append(newSection)
 			}
 		print("entitiesArray has \(entitiesArray.count) elements")
