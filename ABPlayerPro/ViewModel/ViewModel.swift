@@ -13,9 +13,6 @@ import CoreData
 
 class ViewModel: ObservableObject {
 	
-	let container: NSPersistentContainer
-	
-
 	@Published var allTracks: [ AudioTrack ] = []
 	
 	@Published var audioEngineA = AudioEngine()
@@ -126,7 +123,11 @@ class ViewModel: ObservableObject {
 	func removeSection(number: Int) {
 		selectedForEditing.removeSection(number: number)
 	}
-
+	func updateAllTracks(){
+		allTracks = []
+		allTracks = StorageManager.shared.updatedAllTRacks
+//		StorageManager.shared.updatedAllTRacks = []
+	}
 	
 	
 	//files management
@@ -140,13 +141,14 @@ class ViewModel: ObservableObject {
 //		waveformModel = WaveformModel(url: fileURL)
 //		let wave = waveformModel.samples
 		
-		
-		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format, isWaveformRetrieved: false)
-		
-		
+		StorageManager.shared.fetchSectionsOfTrack(named: fileName)
+		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format, sections: StorageManager.shared.savedSectionsDeEntitisized , isWaveformRetrieved: false)
 		
 		self.allTracks.append(audioTrack)
 		
+		
+		StorageManager.shared.savedSectionsDeEntitisized.removeAll()
+		StorageManager.shared.savedSectionsEntities.removeAll()
 		
 		
 	}
@@ -208,12 +210,5 @@ class ViewModel: ObservableObject {
 	}
 	
 	
-	init() {
-		container = NSPersistentContainer(name: "SectionModel")
-		container.loadPersistentStores { (description, error)  in
-			if let error = error {
-				print("Error loading CoreData \(error)")
-			}
-		}
-	}
+	
 }

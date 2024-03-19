@@ -30,7 +30,8 @@ struct LabelsBlock: View {
 	
 	var body: some View {
 		HStack {
-			let position = engine.positionInSeconds
+			@State var position = engine.positionInSeconds
+			@State var currentLabel = engine.currentSectionLabel
 			Text(position)
 				.foregroundColor(dCS.pastelPurpleLighter)
 			
@@ -38,7 +39,7 @@ struct LabelsBlock: View {
 			
 			
 			if (engine.currentSectionLabel) != "" {
-				Text(engine.currentSectionLabel)
+				Text(currentLabel)
 					.foregroundColor(dCS.pastelPurpleLighter)
 					.padding(.horizontal)
 					.background(dCS.darkerGray)

@@ -178,5 +178,101 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1FCDF96F-58B4-4F66-9C67-E11F886163E1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ABPlayerPro/ViewModel/ViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "updateAllTracks()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1FCDF96F-58B4-4F66-9C67-E11F886163E1 - a3008e5b646885e5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ABPlayerPro.ViewModel.updateAllTracks() -&gt; ()"
+                  moduleName = "ABPlayerPro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kidneynipples/Densk/Xcode%20projects/ABPlayerPro/ABPlayerPro/ViewModel/ViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "60">
+               </Location>
+               <Location
+                  uuid = "1FCDF96F-58B4-4F66-9C67-E11F886163E1 - a3008e5b646885a7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ABPlayerPro.ViewModel.updateAllTracks() -&gt; ()"
+                  moduleName = "ABPlayerPro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kidneynipples/Densk/Xcode%20projects/ABPlayerPro/ABPlayerPro/ViewModel/ViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "72">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E91AA398-855F-40B2-BB1E-BDA459B8E28D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ABPlayerPro/CoreDataModel/StorageManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "updateAllTracksWithSections(allTracks:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E91AA398-855F-40B2-BB1E-BDA459B8E28D - 70173d5569ccd41"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ABPlayerPro.StorageManager.updateAllTracksWithSections(allTracks: Swift.Array&lt;ABPlayerPro.AudioTrack&gt;) -&gt; ()"
+                  moduleName = "ABPlayerPro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kidneynipples/Densk/Xcode%20projects/ABPlayerPro/ABPlayerPro/CoreDataModel/StorageManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "628">
+               </Location>
+               <Location
+                  uuid = "E91AA398-855F-40B2-BB1E-BDA459B8E28D - 70173d5569ccd41"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ABPlayerPro.StorageManager.updateAllTracksWithSections(allTracks: Swift.Array&lt;ABPlayerPro.AudioTrack&gt;) -&gt; ()"
+                  moduleName = "ABPlayerPro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kidneynipples/Densk/Xcode%20projects/ABPlayerPro/ABPlayerPro/CoreDataModel/StorageManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "512">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

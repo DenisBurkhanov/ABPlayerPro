@@ -113,13 +113,13 @@ struct ABPlayerView: View {
 			}
 			
 			
-			if appState == 2 {
-				viewModel.audioEngineA.getSectionLabel(forPlaybackPosition: viewModel.playbackPosition)
-				viewModel.audioEngineB.getSectionLabel(forPlaybackPosition: viewModel.playbackPosition)
-				viewModel.selectedForEditing.audioPlayer?.stop()
-			} else if appState == 1 {
-				viewModel.selectedForEditing.getSectionLabel(forPlaybackPosition: viewModel.selectedForEditing.playbackPosition)
-			}
+//			if appState == 2 {
+////				viewModel.audioEngineA.getSectionLabel(forPlaybackPosition: viewModel.playbackPosition)
+////				viewModel.audioEngineB.getSectionLabel(forPlaybackPosition: viewModel.playbackPosition)
+//				viewModel.selectedForEditing.audioPlayer?.stop()
+//			} else if appState == 1 {
+//				viewModel.selectedForEditing.getSectionLabel(forPlaybackPosition: viewModel.selectedForEditing.playbackPosition)
+//			}
 		}
 	}
 }
@@ -160,10 +160,14 @@ extension ABPlayerView {
 						DispatchQueue.global().async {
 							viewModel.createDataFolderIfNeeded()
 							libChecker.checkIfFilesExist()
+							
+							
 							DispatchQueue.main.async {
 								withAnimation {
 									isGearShown = false
-									viewModel.allTracks = libChecker.bufferForAllTRacks
+									
+									viewModel.allTracks = libChecker.bufferForAllTracks
+									libChecker.bufferForAllTracks = []
 									appState = 1
 									Haptix.shared.doubleTap()
 								}
@@ -277,14 +281,12 @@ extension ABPlayerView {
 			if appState == 1 {
 				withAnimation(.smooth) {
 					appState = 2
-//					prepareHaptix()
 					Haptix.shared.doubleTap()
 				}
 				
 			} else if appState == 2 {
 				withAnimation(.snappy) {
 					appState = 1
-//					prepareHaptix()
 					Haptix.shared.doubleTap()
 				}
 				
@@ -512,11 +514,11 @@ extension ABPlayerView {
 						} label: {
 							ZStack {
 								Circle()
-									.foregroundColor(dCS.pastelBlue)
+									.foregroundColor(viewModel.normalized ? dCS.pastelBlue : dCS.darkerGray)
 		
 								Image(systemName: "equal.circle")
 									.font(.system(size: 40))
-									.foregroundColor(viewModel.normalized ? dCS.bgColor : dCS.lighterGray)
+									.foregroundColor(dCS.bgColor)
 									.shadow(radius: 10)
 							}
 							.frame(height: 65)
@@ -653,8 +655,8 @@ extension ABPlayerView {
 	var listOfTracks: some View {
 		
 		ScrollView {
-//			.sorted(by: {$0.title < $1.title})
-			ForEach(viewModel.allTracks) { track in
+			
+			ForEach(viewModel.allTracks.sorted(by: {$0.title < $1.title})) { track in
 				
 				HStack {
 					if viewModel.audioEngineA.track.id == track.id {
@@ -711,7 +713,7 @@ extension ABPlayerView {
 								.padding()
 								.onTapGesture {
 									
-									viewModel.selectedForEditing = AudioEngine(track: track)
+									viewModel.selectedForEditing.track = track
 									viewModel.selectedForEditing.setupAudioPlayer()
 									viewModel.selectedForEditing.audioPlayer?.volume = 1
 									Haptix.shared.sharpTap()
@@ -807,6 +809,7 @@ extension ABPlayerView {
 					Button(role: .destructive) {
 						viewModel.deleteTrack(track: viewModel.selectedForEditing.track)
 						Haptix.shared.sharpTap()
+						StorageManager.shared.removeSectionsOf(track: viewModel.selectedForEditing.track)
 						
 					} label: {
 						Text("Delete")
@@ -850,6 +853,7 @@ extension ABPlayerView {
 					@State var track = viewModel.selectedForEditing.track
 					viewModel.addSection(track: track)
 					viewModel.selectedForEditing.track.fillMarkUpSections()
+					
 					Haptix.shared.sharpTap()
 				} label: {
 					HStack {
@@ -1020,6 +1024,13 @@ extension ABPlayerView {
 				
 				Button {
 					viewModel.applyChanges()
+					
+					StorageManager.shared.addSectionsToStorage(of: viewModel.selectedForEditing.track)
+					
+					StorageManager.shared.updateAllTracksWithSections(allTracks: viewModel.allTracks)
+					
+//					viewModel.updateAllTracks()
+					
 					editState = false
 					Haptix.shared.sharpTap()
 				} label: {

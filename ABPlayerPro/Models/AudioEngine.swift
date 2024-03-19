@@ -47,7 +47,15 @@ class AudioEngine: ObservableObject {
 		let formattedPosition = formatter.string(from: playbackPosition)
 		return formattedPosition ?? ""
 	}
-	var currentSectionLabel = ""
+	var currentSectionLabel: String {
+		var title = ""
+		for section in track.sections {
+			if section.startTime <= playbackPosition && playbackPosition < section.endTime {
+				title = section.title
+			}
+		}
+		return title
+	}
 	
 	
 	//Metering
@@ -84,14 +92,14 @@ class AudioEngine: ObservableObject {
 		
 	}
 	
-	func getSectionLabel(forPlaybackPosition: TimeInterval) {
-		
-		for section in track.sections {
-			if section.startTime <= forPlaybackPosition && forPlaybackPosition < section.endTime {
-				currentSectionLabel = section.title
-			}
-		}
-	}
+//	func getSectionLabel(forPlaybackPosition: TimeInterval) {
+//		
+//		for section in track.sections {
+//			if section.startTime <= forPlaybackPosition && forPlaybackPosition < section.endTime {
+//				currentSectionLabel = section.title
+//			}
+//		}
+//	}
 	
 	
 	//Volume offset

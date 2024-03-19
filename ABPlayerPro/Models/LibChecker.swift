@@ -11,7 +11,7 @@ import AVFoundation
 import Waveform
 
 struct LibChecker {
-	var bufferForAllTRacks: [ AudioTrack ] = []
+	var bufferForAllTracks: [ AudioTrack ] = []
 	var waveformModel = WaveformModel(url: emptyTrack.filePath)
 	mutating func checkIfFilesExist(){
 		
@@ -65,11 +65,19 @@ struct LibChecker {
 //		let wave = waveformModel.samples
 		
 		
-		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format)
+		StorageManager.shared.fetchSectionsOfTrack(named: fileName)
+		let audioTrack = AudioTrack(filePath: fileURL, title: title, format: format, sections: StorageManager.shared.savedSectionsDeEntitisized , isWaveformRetrieved: false)
 		
-		self.bufferForAllTRacks.append(audioTrack)
+		self.bufferForAllTracks.append(audioTrack)
 		
 		
+		StorageManager.shared.savedSectionsDeEntitisized.removeAll()
+		StorageManager.shared.savedSectionsEntities.removeAll()
 		
+		
+	}
+	mutating func updateBufferWithFullTracks(newTracks: [AudioTrack]) {
+		bufferForAllTracks.removeAll()
+		bufferForAllTracks = newTracks
 	}
 }
