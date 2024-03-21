@@ -9,7 +9,7 @@ import SwiftUI
 
 struct editSectionsView: View {
 	
-	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
+	let allColors = [ dCS.dmlighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
 	var section: Section
 	@State var colorEdit = false
 	@State var selectedColor = dCS.bgColor

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		13054F272BA982D2004E9EF1 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13054F262BA982D2004E9EF1 /* StorageManager.swift */; };
+		130BE2672BAC66900014CD01 /* RoundBlueButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130BE2662BAC66900014CD01 /* RoundBlueButtonView.swift */; };
 		132E614D2B6B9657002777B9 /* silentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132E614C2B6B9657002777B9 /* silentMode.swift */; };
 		134695582B6EC0220089DD5D /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134695572B6EC0220089DD5D /* Logo.swift */; };
 		134912742BA4AD9D003E3CA2 /* PositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134912732BA4AD9D003E3CA2 /* PositionView.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		13054F262BA982D2004E9EF1 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		130BE2662BAC66900014CD01 /* RoundBlueButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundBlueButtonView.swift; sourceTree = "<group>"; };
 		132E614C2B6B9657002777B9 /* silentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = silentMode.swift; sourceTree = "<group>"; };
 		134695572B6EC0220089DD5D /* Logo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
 		134912732BA4AD9D003E3CA2 /* PositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionView.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				134912772BA4BEDE003E3CA2 /* LabelsBlock.swift */,
 				134912752BA4B480003E3CA2 /* SectionsBlock.swift */,
 				1380DE072BA079E90098B80D /* Waveform.swift */,
+				130BE2662BAC66900014CD01 /* RoundBlueButtonView.swift */,
 				134912792BA4CAF9003E3CA2 /* JogBlock.swift */,
 				134A533D2BA5BECE00422B29 /* SectionCardEditView.swift */,
 				13706CB62B7F00F6000A1694 /* EditSectionsView.swift */,
@@ -255,6 +258,7 @@
 				13B604C62B0A4008000D8184 /* ABPlayerView.swift in Sources */,
 				13B604D22B0A419B000D8184 /* Colors.swift in Sources */,
 				132E614D2B6B9657002777B9 /* silentMode.swift in Sources */,
+				130BE2672BAC66900014CD01 /* RoundBlueButtonView.swift in Sources */,
 				134912742BA4AD9D003E3CA2 /* PositionView.swift in Sources */,
 				13B094352BA820F90015DD02 /* SectionModel.xcdatamodeld in Sources */,
 				134695582B6EC0220089DD5D /* Logo.swift in Sources */,

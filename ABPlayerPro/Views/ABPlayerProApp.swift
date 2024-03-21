@@ -13,7 +13,6 @@ struct ABPlayerProApp: App {
     var body: some Scene {
         WindowGroup {
             ABPlayerView()
-				.defaultTextColor() 
         }
     }
 }

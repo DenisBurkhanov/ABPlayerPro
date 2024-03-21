@@ -78,8 +78,6 @@ struct ABPlayerView: View {
 		.onReceive(timer) { _ in
 			if isGearShown {
 				gearAngle += 0.05
-			} else {
-				gearAngle = 0
 			}
 			
 			
@@ -96,10 +94,7 @@ struct ABPlayerView: View {
 					viewModel.audioEngineB.calcResultAvgBuffer()
 					Haptix.shared.sharpTap()
 					isCompensationAvailable = true
-					
-					
-					
-					
+				
 				}
 				
 			}
@@ -111,15 +106,6 @@ struct ABPlayerView: View {
 					viewModel.audioEngineB.meterValues()
 				}
 			}
-			
-			
-//			if appState == 2 {
-////				viewModel.audioEngineA.getSectionLabel(forPlaybackPosition: viewModel.playbackPosition)
-////				viewModel.audioEngineB.getSectionLabel(forPlaybackPosition: viewModel.playbackPosition)
-//				viewModel.selectedForEditing.audioPlayer?.stop()
-//			} else if appState == 1 {
-//				viewModel.selectedForEditing.getSectionLabel(forPlaybackPosition: viewModel.selectedForEditing.playbackPosition)
-//			}
 		}
 	}
 }
@@ -282,6 +268,7 @@ extension ABPlayerView {
 				withAnimation(.smooth) {
 					appState = 2
 					Haptix.shared.doubleTap()
+					viewModel.selectedForEditing.audioPlayer?.stop()
 				}
 				
 			} else if appState == 2 {
@@ -393,7 +380,7 @@ extension ABPlayerView {
 							Text("A")
 								.bold()
 								.font(.system(size: 60))
-								.foregroundColor(isSelectedA ? dCS.darkerGray : dCS.lighterGray)
+								.foregroundColor(isSelectedA ? dCS.darkerGray : dCS.dmlighterGray)
 								.padding(39)
 								.padding(.horizontal)
 								
@@ -402,7 +389,7 @@ extension ABPlayerView {
 							Text("B")
 								.bold()
 								.font(.system(size: 60))
-								.foregroundColor(isSelectedA ? dCS.lighterGray : dCS.darkerGray)
+								.foregroundColor(isSelectedA ? dCS.dmlighterGray : dCS.darkerGray)
 								.padding(33)
 								.padding(.horizontal)
 								.offset(x: 4, y: 0)
@@ -863,7 +850,7 @@ extension ABPlayerView {
 								.frame(height: 25)
 								.scaleEffect(1.5)
 							Circle()
-								.foregroundColor(dCS.lighterGray)
+								.foregroundColor(dCS.dmlighterGray)
 								.frame(height: 30)
 								.shadow(radius: 10)
 							Image(systemName: "plus")
@@ -899,22 +886,7 @@ extension ABPlayerView {
 							viewModel.selectedForEditing.audioPlayer?.pause()
 						}
 					} label: {
-						ZStack {
-							Circle()
-								.foregroundColor(dCS.pastelBlue)
-								.shadow(radius: 10)
-
-							if  viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false {
-								Image(systemName: "pause.fill")
-									.scaleEffect(1.8)
-									.foregroundColor(dCS.bgColor)
-							} else {
-								Image(systemName: "play.fill")
-									.scaleEffect(1.8)
-									.foregroundColor(dCS.bgColor)
-							}
-						}
-						.frame(height: 50)
+						RoundBlueButtonView(buttonState: (viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false), isImage: true, ifName: "pause.fill", elseName: "play.fill")
 					}
 				
 				Spacer()
@@ -927,15 +899,7 @@ extension ABPlayerView {
 					editState = true
 					Haptix.shared.sharpTap()
 				} label: {
-					ZStack {
-						Circle()
-							.foregroundColor(dCS.pastelBlue)
-							.shadow(radius: 10)
-						Text("EDIT")
-							.font(.system(size: 13))
-							.foregroundColor(dCS.bgColor)
-					}
-					.frame(height: 50)
+					RoundBlueButtonView(isImage: false, name: "EDIT")
 				}
 			}
 			
@@ -971,22 +935,7 @@ extension ABPlayerView {
 						viewModel.selectedForEditing.audioPlayer?.pause()
 					}
 				} label: {
-					ZStack {
-						Circle()
-							.foregroundColor(dCS.pastelBlue)
-							.shadow(radius: 10)
-						
-						if  viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false {
-							Image(systemName: "pause.fill")
-								.scaleEffect(1.8)
-								.foregroundColor(dCS.bgColor)
-						} else {
-							Image(systemName: "play.fill")
-								.scaleEffect(1.8)
-								.foregroundColor(dCS.bgColor)
-						}
-					}
-					.frame(height: 50)
+					RoundBlueButtonView(buttonState: (viewModel.selectedForEditing.audioPlayer?.isPlaying ?? false), isImage: true, ifName: "pause.fill", elseName: "play.fill")
 				}
 				
 				Spacer()
@@ -994,30 +943,14 @@ extension ABPlayerView {
 				Button {
 					viewModel.copySections()
 				} label: {
-					ZStack {
-						Circle()
-							.foregroundColor(dCS.pastelBlue)
-							.shadow(radius: 10)
-						Text("COPY")
-							.font(.system(size: 13))
-							.foregroundColor(dCS.bgColor)
-					}
-					.frame(height: 50)
+					RoundBlueButtonView(isImage: false, name: "COPY")
 				}
 				
 				Button {
 					viewModel.pasteSections()
 					
 				} label: {
-					ZStack {
-						Circle()
-							.foregroundColor(dCS.pastelBlue)
-							.shadow(radius: 10)
-						Text("PASTE")
-							.font(.system(size: 13))
-							.foregroundColor(dCS.bgColor)
-					}
-					.frame(height: 50)
+					RoundBlueButtonView(isImage: false, name: "PASTE")
 				}
 				
 				Spacer()
@@ -1029,22 +962,10 @@ extension ABPlayerView {
 					
 					StorageManager.shared.updateAllTracksWithSections(allTracks: viewModel.allTracks)
 					
-//					viewModel.updateAllTracks()
-					
 					editState = false
 					Haptix.shared.sharpTap()
 				} label: {
-					ZStack {
-						Circle()
-							.foregroundColor(dCS.pastelBlue)
-							.shadow(radius: 10)
-						
-						Text("APPLY")
-							.font(.system(size: 13))
-							.foregroundColor(dCS.bgColor)
-						
-					}
-					.frame(height: 50)
+					RoundBlueButtonView(isImage: false, name: "APPLY")
 				}
 			}
 			

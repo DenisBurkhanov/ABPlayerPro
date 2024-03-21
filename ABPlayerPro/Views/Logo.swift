@@ -55,7 +55,7 @@ struct Logo: View {
 					Text("B")
 						.bold()
 						.font(.system(size: 160))
-						.foregroundColor(dCS.lighterGray)
+						.foregroundColor(dCS.dmlighterGray)
 						.padding(30)
 						.padding(.horizontal)
 						

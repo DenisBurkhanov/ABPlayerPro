@@ -11,7 +11,7 @@ import CoreData
 import SwiftUI
 
 final class StorageManager {
-	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
+	let allColors = [ dCS.dmlighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
 	static let shared = StorageManager()
 	let container: NSPersistentContainer
 	
@@ -54,8 +54,6 @@ final class StorageManager {
 				saveData()
 			}
 			
-			
-			
 			print("\(result.count) object(s) with title \(trackTitle) removed.")
 		} catch {
 			print("Error removing objects: \(error.localizedDescription)")
@@ -71,27 +69,19 @@ final class StorageManager {
 		}
 	}
 	
-//	func fetchAllDataForAll(allTracks: [AudioTrack]){
-//		for track in allTracks {
-//			<#body#>
-//		}
-//	}
-	
 	func fetchSectionsOfTrack(named trackTitle: String) {
-		
 		
 		let fetchRequest = NSFetchRequest<SectionEntity>(entityName: "SectionEntity")
 		let predicate = NSPredicate(format: "trackTitle == %@", trackTitle)
 		fetchRequest.predicate = predicate
 		do {
 			
-			
-			
 			savedSectionsEntities = try container.viewContext.fetch(fetchRequest)
 			
 		} catch let error {
 			print("Fetch error \(error.localizedDescription)")
 		}
+		
 		deEntitization(of: savedSectionsEntities)
 		
 	}
@@ -100,7 +90,6 @@ final class StorageManager {
 	
 		for entity in entitiesArray {
 			let id = entity.id ?? UUID()
-			//				let trackTitle = entity.trackTitle
 			let title = entity.title ?? ""
 			let startTime = entity.startTime
 			let endTime = entity.endTime
@@ -120,7 +109,9 @@ final class StorageManager {
 	}
 	
 	func addFetchedSectionsOf(tracks: [AudioTrack], sections: [Section]) -> [AudioTrack]{
+		
 		var buffer = tracks
+		
 		for (index, track) in tracks.enumerated() {
 			
 			fetchSectionsOfTrack(named: track.filePath.lastPathComponent)
@@ -133,13 +124,10 @@ final class StorageManager {
 			
 		}
 		return buffer
-		
 	}
 	
-	
-	
 	func updateAllTracksWithSections(allTracks: [AudioTrack]){
-//		savedSectionsEntities = []
+
 		for track in allTracks {
 			
 			fetchSectionsOfTrack(named: track.filePath.lastPathComponent)

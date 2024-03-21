@@ -20,7 +20,7 @@ struct SectionCardView: View {
 	@Binding var sectionIndex: Int
 	var removeSection: (Int) -> ()
 	
-	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed ]
+	let allColors = [ dCS.dmlighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed ]
 	
 
 	
@@ -97,7 +97,7 @@ struct SectionCardView: View {
 						.opacity(0.7)
 						.frame(height: 20)
 						.padding(10)
-						.background( dCS.lighterGray)
+						.background( dCS.dmlighterGray)
 						.clipShape(Circle())
 						.offset(x: slideValue)
 						.gesture(

@@ -26,7 +26,7 @@ class ViewModel: ObservableObject {
 	@Published var playbackPosition: TimeInterval = 0.0
 	@Published var normalized = false
 	
-	let allColors = [ dCS.lighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
+	let allColors = [ dCS.dmlighterGray, dCS.pastelPurple, dCS.pastelBlue, dCS.pastelGreen, dCS.pastelYellow, dCS.pastelRed]
 	var copySectionsBuffer: [Section] = []
 	
 	
