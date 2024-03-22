@@ -653,15 +653,25 @@ extension ABPlayerView {
 						
 					} else {
 						Button {
-							viewModel.switchTrackA(track: track)
-							viewModel.audioEngineA.setupAudioPlayer()
 							Haptix.shared.sharpTap()
-							
-							if isSelectedA {
-								viewModel.audioEngineB.audioPlayer?.volume = 0
-							} else {
-								viewModel.audioEngineA.audioPlayer?.volume = 0
+							viewModel.switchTrackA(track: track)
+							DispatchQueue.global().async {
+								
+								viewModel.audioEngineA.setupAudioPlayer()
+								if isSelectedA {
+									viewModel.audioEngineB.audioPlayer?.volume = 0
+								} else {
+									viewModel.audioEngineA.audioPlayer?.volume = 0
+								}
+								
+//								DispatchQueue.main.async {
+//									withAnimation {
+//										
+//									}
+//									
+//								}
 							}
+							Haptix.shared.doubleTap()
 						} label: {
 							Image(systemName: "circle.dotted")
 								.foregroundColor(dCS.pastelBlue)
@@ -699,24 +709,22 @@ extension ABPlayerView {
 								.minimumScaleFactor(0.5)
 								.padding()
 								.onTapGesture {
-									
-									viewModel.selectedForEditing.track = track
-									viewModel.selectedForEditing.setupAudioPlayer()
-									viewModel.selectedForEditing.audioPlayer?.volume = 1
 									Haptix.shared.sharpTap()
+									viewModel.selectedForEditing.track = track
+									DispatchQueue.global().async {
+										viewModel.selectedForEditing.setupAudioPlayer()
+										viewModel.selectedForEditing.audioPlayer?.volume = 1
+									}
+									Haptix.shared.doubleTap()
 								}
 								.onLongPressGesture(minimumDuration: 0.5) {
 									if track.id == viewModel.selectedForEditing.track.id {
 										showAlert = true
 										Haptix.shared.doubleTap()
+										Haptix.shared.doubleTap()
 									}
-									
-									
 								}
-							
-							
-							
-							
+
 							Spacer()
 							
 							if track.isWaveformRetrieved {
@@ -773,16 +781,17 @@ extension ABPlayerView {
 							.font(.system(size: 25))
 					} else {
 						Button {
-							viewModel.switchTrackB(track: track)
-							viewModel.audioEngineB.setupAudioPlayer()
 							Haptix.shared.sharpTap()
-							
-							if isSelectedA {
-								viewModel.audioEngineB.audioPlayer?.volume = 0
-							} else {
-								viewModel.audioEngineA.audioPlayer?.volume = 0
+							viewModel.switchTrackB(track: track)
+							DispatchQueue.global().async {
+								viewModel.audioEngineB.setupAudioPlayer()
+								if isSelectedA {
+									viewModel.audioEngineB.audioPlayer?.volume = 0
+								} else {
+									viewModel.audioEngineA.audioPlayer?.volume = 0
+								}
 							}
-							
+							Haptix.shared.doubleTap()
 						} label: {
 							Image(systemName: "circle.dotted")
 								.foregroundColor(dCS.pastelBlue)

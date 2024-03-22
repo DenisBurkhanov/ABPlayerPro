@@ -103,17 +103,20 @@ struct SectionCardView: View {
 						.gesture(
 							DragGesture(minimumDistance: 0)
 								.onChanged{ _ in
+									Haptix.shared.sharpTap()
 									engine.playFrom(time: sectionStartTime)
 									engine.audioPlayer?.play()
 								}
 							
 								.onEnded { _ in
+									Haptix.shared.dullTap()
 									engine.audioPlayer?.pause()
 									
 								}
 						)
 				} else {
 					Button {
+						Haptix.shared.doubleTap()
 						removeSection(sectionIndex)
 						isDeleteButtonShown = false
 						engine.track.fillMarkUpSections()
@@ -149,7 +152,7 @@ struct SectionCardView: View {
 				
 				//MARK: COLOR SELECT BUTTON
 				Button {
-					
+					Haptix.shared.doubleTap()
 					selectedColor = allColors[index]
 					colorEdit = false
 
